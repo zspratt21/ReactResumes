@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrowserShotTestController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Response;
@@ -34,8 +35,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/php-info', function () {
-    return new Response(phpinfo(), 200, ['Content-Type' => 'text/html']);
-})->middleware('RestrictToAdmin')->name('php-info');
+Route::middleware('RestrictToAdmin')->group(function () {
+    Route::get('/php-info', function () {
+        return new Response(phpinfo(), 200, ['Content-Type' => 'text/html']);
+    })->name('php-info');
+
+    Route::get('/browser-shot-test', [BrowserShotTestController::class, 'show'])->name('browser-shot-test');
+});
 
 require __DIR__.'/auth.php';

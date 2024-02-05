@@ -17,6 +17,7 @@
         "meilisearch/meilisearch-php": "^1.5",
         "pragmarx/google2fa": "^8.0",
         "sentry/sentry-laravel": "^4.1",
+        "spatie/browsershot": "^4.0",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
