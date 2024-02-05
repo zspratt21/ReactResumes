@@ -4,8 +4,6 @@ services:
     build:
         context: .
         dockerfile: ./docker/web/Dockerfile
-        args:
-          - LOCAL_ROOT_CA=${SSL_CERTIFICATE_AUTHORITY_PATH:-./docker/ssl/certs/RootCA.pem}
     restart: unless-stopped
     ports:
       - "${DOCKER_NGINX_HTTP_PORT:-80}:80"
