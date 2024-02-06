@@ -62,7 +62,7 @@ class ResumeProfile extends Model
             return true;
         }
 
-        return Storage::disk('public')->delete($this->getRawOriginal('cover_photo'));
+        return Storage::disk(env('APP_DISK', 's3'))->delete($this->getRawOriginal('cover_photo'));
     }
 
     /**

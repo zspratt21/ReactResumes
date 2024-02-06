@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::patch('/resume-profile', [ResumeController::class, 'updateResumeProfile'])->name('resume-profile.update');
+    Route::patch('/resume-options', [ResumeController::class, 'updateResumeOptions'])->name('resume-options.update');
 });
 
 Route::middleware('RestrictToAdmin')->group(function () {

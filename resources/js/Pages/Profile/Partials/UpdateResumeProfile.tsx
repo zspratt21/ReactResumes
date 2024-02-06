@@ -10,7 +10,7 @@ import NumberInput from "@/Components/NumberInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import ImageInput from "@/Components/ImageInput";
 
-export default function UpdateResumeProfile({className = ''}: { status?: string, className?: string}) {
+export default function UpdateResumeProfile({className = ''}: {className?: string}) {
     const user = usePage<PageProps>().props.auth.user;
     const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
         address: user.resume_profile?.address || '',

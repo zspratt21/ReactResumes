@@ -106,4 +106,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(ResumeProfile::class);
     }
+
+    public function resumeOptions(): HasOne
+    {
+        return $this->hasOne(ResumeOptions::class);
+    }
 }

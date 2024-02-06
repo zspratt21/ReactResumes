@@ -6,6 +6,7 @@ export interface User {
     avatar: string;
     two_factor_enabled: 1 | 0;
     resume_profile: ResumeProfile;
+    resume_options: ResumeOptions;
 }
 
 export interface ResumeProfile {
@@ -20,6 +21,16 @@ export interface ResumeProfile {
     salesforce: string|null;
     cover_photo: string|null;
     introduction: string;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface ResumeOptions {
+    id: number;
+    user_id: number;
+    font: string;
+    color_scheme: string;
+    layout: string;
     created_at: string;
     updated_at: string;
 }

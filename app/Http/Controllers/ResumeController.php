@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ResumeOptionsRequest;
 use App\Http\Requests\ResumeProfileRequest;
 use Illuminate\Support\Facades\Redirect;
 
@@ -14,9 +15,8 @@ class ResumeController extends Controller
     {
         if ($request->user()->resumeProfile) {
             $request->user()->resumeProfile->fill($request->validated());
-            $request->user()->resumeProfile->save();
         } else {
-            $request->user()->resumeProfile()->create($request->validated());
+            $request->user()->resumeProfile()->create($request->validated())->save();
         }
         if ((int) $request->remove_cover_photo == 1) {
             $request->user()->resumeProfile->deleteCoverPhoto();
@@ -30,9 +30,16 @@ class ResumeController extends Controller
         return Redirect::route('profile.edit');
     }
 
-    // @todo
-    public function updateResumeOptions()
+    /**
+     * Update the user's resume options.
+     */
+    public function updateResumeOptions(ResumeOptionsRequest $request)
     {
-
+        if ($request->user()->resumeOptions) {
+            $request->user()->resumeOptions->fill($request->validated())->save();
+        } else {
+            $request->user()->resumeOptions()->create($request->validated())->save();
+        }
+        return Redirect::route('profile.edit');
     }
 }
