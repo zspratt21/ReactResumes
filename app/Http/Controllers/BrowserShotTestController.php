@@ -8,9 +8,8 @@ class BrowserShotTestController extends Controller
 {
     public function show()
     {
-        $browserShot = Browsershot::url('https://host.docker.internal:9000/breezehome-public/users/1/avatars/1706670837_4535.webp')
+        $browserShot = Browsershot::url(env('APP_URL', 'http://localhost'))
             ->setRemoteInstance(env('CHROMIUM_HOST', 'chromium'), env('CHROMIUM_PORT', '9222'))
-//            ->timeout(70000)
             ->waitUntilNetworkIdle()
             ->format('A4')
             ->showBackground()

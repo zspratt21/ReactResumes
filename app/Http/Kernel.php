@@ -33,6 +33,7 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'RestrictToAdmin' => \App\Http\Middleware\RestrictToAdmin::class,
+        'ResumePreviewCheck' => \App\Http\Middleware\ResumePreviewCheck::class,
     ];
 
     /**

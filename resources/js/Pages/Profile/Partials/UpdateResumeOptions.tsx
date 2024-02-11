@@ -12,7 +12,7 @@ export default function UpdateResumeOptions({className = ''}: {className?: strin
     const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
         font: user.resume_options?.font || 'figtree',
         color_scheme: user.resume_options?.color_scheme || 'light',
-        layout: user.resume_options?.layout || 'original',
+        layout: user.resume_options?.layout || 'Original',
         _method: 'patch',
     });
     const [refreshKey, setRefreshKey] = useState(0);
@@ -90,8 +90,8 @@ export default function UpdateResumeOptions({className = ''}: {className?: strin
                             isFocused
                             onChange={(e) => setData('layout', e.target.value)}
                             options={{
-                                original: 'Original',
-                                classic: 'Classic',
+                                Original: 'Original',
+                                Classic: 'Classic',
                             }}
                         />
 

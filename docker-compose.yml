@@ -19,6 +19,7 @@ services:
       - ./docker/web/entrypoint.sh:/opt/docker/bin/entrypoint.sh
     depends_on:
       - db
+      - redis
       - s3
       - meilisearch
       - chromium
@@ -37,8 +38,16 @@ services:
     ports:
       - "${DB_PORT:-3306}:3306"
 
+  redis:
+    image: redis:7.2.4
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+        - redis_data:/data
+
   s3:
-    image: minio/minio:RELEASE.2023-12-23T07-19-11Z
+    image: minio/minio:RELEASE.2024-02-04T22-36-13Z
     restart: unless-stopped
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
@@ -68,16 +77,16 @@ services:
     command: ./meilisearch --ssl-cert-path /etc/docker/ssl/certs/localhost.crt --ssl-key-path /etc/docker/ssl/certs/localhost.key
 
   chromium:
-      image: 'zenika/alpine-chrome'
-      restart: always
-      command: "chromium-browser --headless --no-sandbox --no-zygote --disable-gpu --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222"
-      cap_add:
-          - SYS_ADMIN
-      volumes:
-          - chromium_tmp:/tmp
-          - ./docker/chromium/nssdb:/home/chrome/.pki/nssdb
-      ports:
-          - '${CHROMIUM_PORT}:9222'
+    image: 'zenika/alpine-chrome'
+    restart: always
+    command: "chromium-browser --headless --no-sandbox --no-zygote --disable-gpu --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222"
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - chromium_tmp:/tmp
+      - ./docker/chromium/nssdb:/home/chrome/.pki/nssdb
+    ports:
+      - '${CHROMIUM_PORT}:9222'
 
   vite:
     image: node:21
@@ -112,4 +121,5 @@ volumes:
   mailpit_data:
   meilisearch_data:
   mysql_data:
+  redis_data:
   s3_bucket:

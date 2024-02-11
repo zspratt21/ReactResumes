@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ResumeOptionsRequest;
 use App\Http\Requests\ResumeProfileRequest;
+use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
+use Inertia\Response;
+use Spatie\Browsershot\Browsershot;
 
 class ResumeController extends Controller
 {
@@ -40,6 +44,35 @@ class ResumeController extends Controller
         } else {
             $request->user()->resumeOptions()->create($request->validated())->save();
         }
+
         return Redirect::route('profile.edit');
+    }
+
+    /**
+     * Preview the user's resume.
+     */
+    public function preview(): Response
+    {
+        $user = auth()->user() ? auth()->user() : User::find((int) request()->id);
+        return Inertia::render('Resume/Layouts/'.$user->resumeOptions->layout, [
+            'user' => $user->load('resumeProfile', 'resumeOptions'),
+        ]);
+    }
+
+    /**
+     * Print the user's resume to PDF.
+     */
+    public function print()
+    {
+        $browserShot = Browsershot::url('https://host.docker.internal:4430'.'/resume/preview?id='.auth()->id().'&chrome_key='.env('CHROMIUM_KEY'))
+            ->setRemoteInstance(env('CHROMIUM_HOST', 'chromium'), env('CHROMIUM_PORT', '9222'))
+            ->waitUntilNetworkIdle()
+            ->format('A4')
+            ->showBackground()
+            ->noSandbox();
+
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: inline; filename="'.auth()->user()->name.' Resume '.date('F Y').'.pdf"');
+        echo $browserShot->pdf();
     }
 }
