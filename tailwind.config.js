@@ -1,5 +1,6 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
+import plugin from "tailwindcss/plugin";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -14,8 +15,15 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', 'FontAwesome', ...defaultTheme.fontFamily.sans],
+                roboto: ['Roboto', 'FontAwesome', ...defaultTheme.fontFamily.sans],
+                playfair: ['Playfair Display', 'FontAwesome', ...defaultTheme.fontFamily.sans],
             },
         },
     },
-    plugins: [forms],
+    plugins: [
+        forms,
+        plugin(function ({ addVariant }) {
+            addVariant('hasCoverPhoto', '.hasCoverPhoto &')
+        })
+    ],
 };

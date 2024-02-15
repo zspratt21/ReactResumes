@@ -8,18 +8,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('resume_options', function (Blueprint $table) {
+        Schema::create('skills', function (Blueprint $table) {
             $table->id();
-            $table->string('font');
-            $table->string('color_scheme');
-            $table->string('layout');
+            $table->string('name');
             $table->integer('user_id');
+            $table->string('icon')->nullable();
+            $table->string('url')->nullable();
+            $table->integer('priority');
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('resume_options');
+        Schema::dropIfExists('skills');
     }
 };

@@ -54,7 +54,7 @@ class ResumeController extends Controller
     public function preview(): Response
     {
         $user = auth()->user() ? auth()->user() : User::find((int) request()->id);
-        return Inertia::render('Resume/Layouts/'.$user->resumeOptions->layout, [
+        return Inertia::render('Resume/Print/Layouts/'.$user->resumeOptions->layout, [
             'user' => $user->load('resumeProfile', 'resumeOptions'),
         ]);
     }
@@ -69,7 +69,8 @@ class ResumeController extends Controller
             ->waitUntilNetworkIdle()
             ->format('A4')
             ->showBackground()
-            ->noSandbox();
+            ->noSandbox()
+            ->windowSize(1920, 1080);
 
         header('Content-Type: application/pdf');
         header('Content-Disposition: inline; filename="'.auth()->user()->name.' Resume '.date('F Y').'.pdf"');

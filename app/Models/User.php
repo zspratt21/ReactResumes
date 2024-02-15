@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -107,8 +108,19 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(ResumeProfile::class);
     }
 
+    /**
+     * Get the user's resume options.
+     */
     public function resumeOptions(): HasOne
     {
         return $this->hasOne(ResumeOptions::class);
+    }
+
+    /**
+     * Get the user's skills.
+     */
+    public function skills(): HasMany
+    {
+        return $this->hasMany(Skill::class);
     }
 }

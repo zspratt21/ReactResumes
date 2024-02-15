@@ -4,7 +4,8 @@
     "scripts": {
         "dev": "vite",
         "stop-vite-container": "docker-compose down vite && rm ./public/hot -f && npm run build",
-        "build": "tsc && vite build"
+        "build": "tsc && vite build",
+        "gen_key": "php -r \"echo bin2hex(random_bytes(16)).\\\"\\n\\\";\""
     },
     "devDependencies": {
         "@headlessui/react": "^1.4.2",
@@ -26,6 +27,8 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.5.1",
-        "puppeteer": "^21.10.0"
+        "@fortawesome/fontawesome-svg-core": "^6.5.1",
+        "@fortawesome/free-brands-svg-icons": "^6.5.1",
+        "puppeteer": "^22.0.0"
     }
 }

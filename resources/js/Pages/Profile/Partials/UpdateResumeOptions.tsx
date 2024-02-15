@@ -52,8 +52,9 @@ export default function UpdateResumeOptions({className = ''}: {className?: strin
                             isFocused
                             onChange={(e) => setData('font', e.target.value)}
                             options={{
-                                figtree: 'Figtree',
-                                roboto: 'Roboto',
+                                'font-sans': 'Figtree',
+                                'font-roboto': 'Roboto',
+                                'font-playfair': 'Playfair Display',
                             }}
                         />
 

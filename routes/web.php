@@ -37,6 +37,12 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/resume-profile', [ResumeController::class, 'updateResumeProfile'])->name('resume-profile.update');
     Route::patch('/resume-options', [ResumeController::class, 'updateResumeOptions'])->name('resume-options.update');
+
+    Route::get('/resume', [ResumeController::class, 'print'])->name('resume.print');
+});
+
+Route::middleware('ResumePreviewCheck')->group(function () {
+    Route::get('/resume/preview', [ResumeController::class, 'preview'])->name('resume.preview');
 });
 
 Route::middleware('RestrictToAdmin')->group(function () {
