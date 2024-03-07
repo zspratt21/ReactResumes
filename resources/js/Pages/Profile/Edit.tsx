@@ -6,8 +6,6 @@ import ConfigureTwoFactorForm from './Partials/ConfigureTwoFactorForm';
 import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import HeaderHeading from "@/Components/HeaderHeading";
-import UpdateResumeProfile from "@/Pages/Profile/Partials/UpdateResumeProfile";
-import UpdateResumeOptions from "@/Pages/Profile/Partials/UpdateResumeOptions";
 
 export default function Edit({ auth, mustVerifyEmail, status }: PageProps<{ mustVerifyEmail: boolean, status?: string }>) {
     return (
@@ -23,18 +21,6 @@ export default function Edit({ auth, mustVerifyEmail, status }: PageProps<{ must
                         <UpdateProfileInformationForm
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
-                            className="max-w-xl"
-                        />
-                    </div>
-
-                    <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        <UpdateResumeProfile
-                            className="max-w-xl"
-                        />
-                    </div>
-
-                    <div className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                        <UpdateResumeOptions
                             className="max-w-xl"
                         />
                     </div>

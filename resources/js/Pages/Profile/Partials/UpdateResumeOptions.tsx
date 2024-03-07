@@ -1,13 +1,13 @@
 import {useForm, usePage} from "@inertiajs/react";
 import {PageProps} from "@/types";
-import {FormEventHandler, useRef, useState} from "react";
+import {FormEventHandler, useEffect, useRef, useState} from "react";
 import SaveButton from "@/Components/SaveButton";
 import {Transition} from "@headlessui/react";
 import InputLabel from "@/Components/InputLabel";
 import InputError from "@/Components/InputError";
 import SelectInput from "@/Components/SelectInput";
 
-export default function UpdateResumeOptions({className = ''}: {className?: string}) {
+export default function UpdateResumeOptions({className = '', onCompletionChange}: {className?: string, onCompletionChange: (isComplete: boolean) => void}) {
     const user = usePage<PageProps>().props.auth.user;
     const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
         font: user.resume_options?.font || 'figtree',
@@ -16,11 +16,18 @@ export default function UpdateResumeOptions({className = ''}: {className?: strin
         _method: 'patch',
     });
     const [refreshKey, setRefreshKey] = useState(0);
+    const checkValidResumeOptions = () => {
+        onCompletionChange(!!user.resume_options);
+    };
+
+    useEffect(checkValidResumeOptions, [user.resume_options]);
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(
             route('resume-options.update'),
             {
+                preserveScroll: true,
                 onSuccess: (Page) => {
                     setRefreshKey(refreshKey + 1);
                 },
@@ -49,7 +56,6 @@ export default function UpdateResumeOptions({className = ''}: {className?: strin
                             className="mt-1 block w-full"
                             value={data.font}
                             required
-                            isFocused
                             onChange={(e) => setData('font', e.target.value)}
                             options={{
                                 'font-sans': 'Figtree',
@@ -69,7 +75,6 @@ export default function UpdateResumeOptions({className = ''}: {className?: strin
                             className="mt-1 block w-full"
                             value={data.color_scheme}
                             required
-                            isFocused
                             onChange={(e) => setData('color_scheme', e.target.value)}
                             options={{
                                 light: 'Light',
@@ -88,7 +93,6 @@ export default function UpdateResumeOptions({className = ''}: {className?: strin
                             className="mt-1 block w-full"
                             value={data.layout}
                             required
-                            isFocused
                             onChange={(e) => setData('layout', e.target.value)}
                             options={{
                                 Original: 'Original',

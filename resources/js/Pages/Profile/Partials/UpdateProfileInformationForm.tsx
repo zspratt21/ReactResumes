@@ -25,6 +25,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         post(
             route('profile.update'),
             {
+                preserveScroll: true,
                 onSuccess: (Page) => {
                     console.log('onSuccess', Page);
                     setRefreshKey(refreshKey + 1);

@@ -32,6 +32,7 @@ class ResumeProfile extends Model
      * @var array<int, string>
      */
     protected $hidden = [
+        'id',
         'user_id',
     ];
 

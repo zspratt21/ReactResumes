@@ -1,5 +1,5 @@
 import { useForm, usePage } from '@inertiajs/react';
-import {FormEventHandler, useRef, useState} from "react";
+import {FormEventHandler, useEffect, useRef, useState} from "react";
 import {PageProps} from "@/types";
 import SaveButton from "@/Components/SaveButton";
 import {Transition} from "@headlessui/react";
@@ -10,7 +10,7 @@ import NumberInput from "@/Components/NumberInput";
 import TextAreaInput from "@/Components/TextAreaInput";
 import ImageInput from "@/Components/ImageInput";
 
-export default function UpdateResumeProfile({className = ''}: {className?: string}) {
+export default function UpdateResumeProfile({className = '', onCompletionChange}: {className?: string, onCompletionChange: (isComplete: boolean) => void}) {
     const user = usePage<PageProps>().props.auth.user;
     const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
         address: user.resume_profile?.address || '',
@@ -27,12 +27,19 @@ export default function UpdateResumeProfile({className = ''}: {className?: strin
     });
     const [refreshKey, setRefreshKey] = useState(0);
     const imageInputRef = useRef(null);
+    const checkValidResumeProfile = () => {
+        onCompletionChange(!!user.resume_profile);
+    };
+
+    useEffect(checkValidResumeProfile, [user.resume_profile]);
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         console.log('data', data);
         post(
             route('resume-profile.update'),
             {
+                preserveScroll: true,
                 onSuccess: (Page) => {
                     console.log('onSuccess', Page);
                     setRefreshKey(refreshKey + 1);
@@ -64,8 +71,6 @@ export default function UpdateResumeProfile({className = ''}: {className?: strin
                         onChange={(e) => setData('address', e.target.value)}
                         placeholder="&#xf3c5;"
                         required
-                        isFocused
-                        autoComplete="address"
                     />
 
                     <InputError className="mt-2" message={errors.address}/>
@@ -80,7 +85,6 @@ export default function UpdateResumeProfile({className = ''}: {className?: strin
                         value={data.mobile}
                         onChange={(e) => setData('mobile', e.target.value)}
                         placeholder="&#xf2a0;"
-                        autoComplete="number"
                     />
 
                     <InputError className="mt-2" message={errors.address}/>
@@ -95,7 +99,6 @@ export default function UpdateResumeProfile({className = ''}: {className?: strin
                         value={data.linkedin}
                         onChange={(e) => setData('linkedin', e.target.value)}
                         placeholder="&#xf08c;"
-                        autoComplete="linkedin"
                     />
 
                     <InputError className="mt-2" message={errors.linkedin}/>
@@ -110,7 +113,6 @@ export default function UpdateResumeProfile({className = ''}: {className?: strin
                         value={data.github}
                         onChange={(e) => setData('github', e.target.value)}
                         placeholder="&#xf09b;"
-                        autoComplete="github"
                     />
 
                     <InputError className="mt-2" message={errors.github}/>
@@ -125,7 +127,6 @@ export default function UpdateResumeProfile({className = ''}: {className?: strin
                         value={data.twitter}
                         onChange={(e) => setData('twitter', e.target.value)}
                         placeholder="&#xf099;"
-                        autoComplete="twitter"
                     />
 
                     <InputError className="mt-2" message={errors.twitter}/>
@@ -140,7 +141,6 @@ export default function UpdateResumeProfile({className = ''}: {className?: strin
                         value={data.instagram}
                         onChange={(e) => setData('instagram', e.target.value)}
                         placeholder="&#xf16d;"
-                        autoComplete="instagram"
                     />
 
                     <InputError className="mt-2" message={errors.instagram}/>
@@ -155,7 +155,6 @@ export default function UpdateResumeProfile({className = ''}: {className?: strin
                         value={data.salesforce}
                         onChange={(e) => setData('salesforce', e.target.value)}
                         placeholder="&#xf83b;"
-                        autoComplete="salesforce"
                     />
 
                     <InputError className="mt-2" message={errors.salesforce}/>

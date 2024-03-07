@@ -3,6 +3,7 @@
 use App\Http\Controllers\BrowserShotTestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\SkillController;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -38,7 +39,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/resume-profile', [ResumeController::class, 'updateResumeProfile'])->name('resume-profile.update');
     Route::patch('/resume-options', [ResumeController::class, 'updateResumeOptions'])->name('resume-options.update');
 
+    Route::get('/resume/edit', [ResumeController::class, 'edit'])->name('resume.edit');
+
     Route::get('/resume', [ResumeController::class, 'print'])->name('resume.print');
+
+    Route::patch('/skill', [SkillController::class, 'modify'])->name('skill.modify');
+    Route::delete('/skill', [SkillController::class, 'delete'])->name('skill.delete');
+    Route::patch('/skill/priorities', [SkillController::class, 'updatePriorities'])->name('skills.priorities');
 });
 
 Route::middleware('ResumePreviewCheck')->group(function () {

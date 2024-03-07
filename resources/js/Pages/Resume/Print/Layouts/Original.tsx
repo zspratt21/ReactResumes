@@ -1,6 +1,7 @@
 import {User} from "@/types";
 import {useRef} from "react";
 import Main from "@/Pages/Resume/Print/Main";
+import {Skill} from "@/types/resume";
 
 export default function Original({user}: {user: User}) {
     const coverPhoto = user.resume_profile.cover_photo;
@@ -16,9 +17,12 @@ export default function Original({user}: {user: User}) {
                 profilePhotoContainerRef={profilePhotoContainerRef}
             >
                 <div ref={coverPhotoContainerRef} className={coverPhoto ? 'p-4 hasCoverPhoto' : 'p-4'}>
-                    <div className="pt-4 pb-2 text-gray-900 bg-gray-200 dark:text-white dark:bg-gray-800 hasCoverPhoto:text-white hasCoverPhoto:bg-gray-800/60 hasCoverPhoto:dark:bg-gray-800/60 rounded-lg">
-                        <div className="flex justify-between pb-1 mx-4 border-b border-gray-900 hasCoverPhoto:border-white dark:border-white hasCoverPhoto:dark:border-white">
-                            <div ref={profilePhotoContainerRef} className="min-h-[118.75px] min-w-[118.75px] rounded-full border-2 border-gray-900 dark:border-white hasCoverPhoto:border-white"></div>
+                    <div
+                        className="pt-4 pb-2 text-gray-900 bg-gray-200 dark:text-white dark:bg-gray-800 hasCoverPhoto:text-white hasCoverPhoto:bg-gray-950/60 hasCoverPhoto:dark:bg-gray-950/60 rounded-lg">
+                        <div
+                            className="flex justify-between pb-1 mx-4 border-b border-gray-900 hasCoverPhoto:border-white dark:border-white hasCoverPhoto:dark:border-white">
+                            <div ref={profilePhotoContainerRef}
+                                 className="min-h-[118.75px] min-w-[118.75px] rounded-full border-2 border-gray-900 dark:border-white hasCoverPhoto:border-white"></div>
                             <div className="flex flex-col text-right" ref={nameLinksContainerRef}>
                                 <h1 className="text-4xl font-bold">{user.name}</h1>
                                 <div
@@ -59,13 +63,31 @@ export default function Original({user}: {user: User}) {
                             </div>
                         </div>
                         <div className="pt-1 px-2">
-                            <div id="intro-container"
-                                 className="p-2 rounded-lg bg-gray-100 hasCoverPhoto:bg-gray-700/20 dark:bg-gray-700 hasCoverPhoto:dark:bg-gray-700/20">
+                            <div className="p-2 rounded-lg bg-gray-100 hasCoverPhoto:bg-gray-900/20 dark:bg-gray-700 hasCoverPhoto:dark:bg-gray-900/20">
                                 <p className="text-justify leading-tight">{user.resume_profile.introduction}</p>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div className="p-4">
+                    <h2 className="text-gray-900 dark:text-white text-[30px] text-center">&#xf0ad; Skills</h2>
+                    <div className="bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-500 rounded-lg">
+                        <div className="flex flex-wrap justify-center">
+                            {user.skills.map((skill: Skill, index: number) => {
+                                return (
+                                    <a key={index} href={skill.url} className="text-[18px]">
+                                        <div
+                                            className="flex space-x-1 p-1 m-1 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                                            <b className="flex-1">{skill.name}</b>
+                                            <img width="100%" className="max-h-[25px] max-w-fit" src={skill.icon}
+                                                 alt={skill.name}/>
+                                        </div>
+                                    </a>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
             </Main>
         );
-    }
+}

@@ -18,16 +18,7 @@ export default function Main({user, coverPhoto, coverPhotoContainerRef, nameLink
     profilePhotoContainerRef: RefObject<HTMLDivElement>,
 }>) {
     const containerRef = useRef<HTMLDivElement>(null);
-    library.add(faTailWind);
-    library.add(faPuppeteer);
-    library.add(faHtml5);
-    library.add(faReact);
-    library.add(faLaravel);
-    library.add(faLinkedinIn);
-    library.add(faGithub);
-    library.add(faTwitter);
-    library.add(faInstagram);
-    library.add(faSalesforce);
+    library.add(faTailWind, faPuppeteer, faHtml5, faReact, faLaravel, faLinkedinIn, faGithub, faTwitter, faInstagram, faSalesforce);
     dom.watch();
     useEffect(() => {
         if (coverPhoto) {

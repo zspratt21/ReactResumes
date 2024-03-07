@@ -1,4 +1,4 @@
-import {ResumeOptions, ResumeProfile} from "@/types/resume";
+import {Experience, ResumeOptions, ResumeProfile, Skill} from "@/types/resume";
 
 export interface User {
     id: number;
@@ -9,6 +9,8 @@ export interface User {
     two_factor_enabled: 1 | 0;
     resume_profile: ResumeProfile;
     resume_options: ResumeOptions;
+    skills: Skill[];
+    experiences: Experience[];
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {

@@ -1,20 +1,13 @@
 import {forwardRef, useEffect, useImperativeHandle, useRef, InputHTMLAttributes, useState, ChangeEvent} from 'react';
 import PrimaryButton from "@/Components/PrimaryButton";
+import {ImageInputProps} from "@/Components/ImageInput";
 
-export interface ImageInputProps extends InputHTMLAttributes<HTMLInputElement> {
-    isFocused?: boolean;
-    initialPhoto: string | null;
-    setPhotoData: (file: File | null) => void;
-    setRemoveData: (value: 1 | 0) => void;
-    previewClassName?: string;
-    previewHeight?: string;
-    previewWidth?: string;
-}
 
 export default forwardRef(function ImageInput(
     { className = '', isFocused = false, initialPhoto, setPhotoData, setRemoveData, previewClassName = '', previewHeight = '', previewWidth = '', ...props }: ImageInputProps,
     ref
 ) {
+    // @todo
     const localRef = useRef<HTMLInputElement>(null);
     const [remove, setRemove] = useState<1 | 0>(0);
     const [hasFiles, setHasFiles] = useState(false);
@@ -84,10 +77,10 @@ export default forwardRef(function ImageInput(
                 ref={localRef}
             />
 
-            <div className="w-full flex space-x-1">
+            <div className="flex items-end space-x-2">
 
                 <PrimaryButton
-                    className="flex-1"
+                    className="flex-1 min-h-10"
                     onClick={(e) => {
                         e.preventDefault();
                         if (localRef.current) {
@@ -97,7 +90,7 @@ export default forwardRef(function ImageInput(
                 >&#xf055; Add</PrimaryButton>
 
                 <PrimaryButton
-                    className="flex-1"
+                    className="flex-1 min-h-10"
                     disabled={initialPhoto === null && !hasFiles}
                     onClick={(e) => {
                         e.preventDefault();
@@ -107,31 +100,31 @@ export default forwardRef(function ImageInput(
 
             </div>
 
-            <div className="mt-2 relative w-fit">
-                <div className={`bg-gray-900/80 w-full h-full z-10 absolute border-1 border-gray-100 ${previewClassName}`}
-                     style={{display: remove ? 'block' : 'none'}}
-                >
-                    <div className="flex flex-col items-center justify-center h-full text-gray-100 text-6xl">
-                        &#xf057;
-                    </div>
-                </div>
-                <div>
-                    <img id={props.id + '-preview'}
-                         className={previewClassName}
-                         src={imagePreviewSrc}
-                         alt={props.alt}
-                         style={{display: initialPhoto == null && !hasFiles ? 'none' : 'block', height: previewHeight == '' ? 'inherit' : previewHeight, width: previewWidth == '' ? 'inherit' : previewWidth}}
-                    />
-                    <div className="w-full my-auto"
-                         style={{display: initialPhoto == null && !hasFiles ? 'block' : 'none'}}
-                    >
-                        <div className="flex flex-col items-center justify-center">
-                            <div className="text-2xl">No image</div>
-                            <div className="text-sm">Click Add to upload an image</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {/*<div className="mt-2 relative w-fit">*/}
+            {/*    <div className={`bg-gray-900/80 w-full h-full z-10 absolute border-1 border-gray-100 ${previewClassName}`}*/}
+            {/*         style={{display: remove ? 'block' : 'none'}}*/}
+            {/*    >*/}
+            {/*        <div className="flex flex-col items-center justify-center h-full text-gray-100 text-6xl">*/}
+            {/*            &#xf057;*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*    <div>*/}
+            {/*        <img id={props.id + '-preview'}*/}
+            {/*             className={previewClassName}*/}
+            {/*             src={imagePreviewSrc}*/}
+            {/*             alt={props.alt}*/}
+            {/*             style={{display: initialPhoto == null && !hasFiles ? 'none' : 'block', height: previewHeight == '' ? 'inherit' : previewHeight, width: previewWidth == '' ? 'inherit' : previewWidth}}*/}
+            {/*        />*/}
+            {/*        <div className="w-full my-auto"*/}
+            {/*             style={{display: initialPhoto == null && !hasFiles ? 'block' : 'none'}}*/}
+            {/*        >*/}
+            {/*            <div className="flex flex-col items-center justify-center">*/}
+            {/*                <div className="text-2xl">No image</div>*/}
+            {/*                <div className="text-sm">Click Add to upload an image</div>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
         </div>
     );
 });

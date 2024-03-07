@@ -81,6 +81,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function delete(): bool
     {
         $this->deleteAvatar();
+        $this->skills()->delete();
 
         return parent::delete();
     }
@@ -121,6 +122,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function skills(): HasMany
     {
-        return $this->hasMany(Skill::class);
+        return $this->hasMany(Skill::class)->orderBy('priority');
     }
 }

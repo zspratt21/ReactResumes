@@ -6,9 +6,14 @@ import MainLayout from './MainLayout';
 
 export default function Authenticated({ user, header, children }: PropsWithChildren<{ user: User, header?: ReactNode }>) {
     const navigationLinks = (
-        <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-            Dashboard
-        </NavLink>
+        <>
+            <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                Dashboard
+            </NavLink>
+            <NavLink href={route('resume.edit')} active={route().current('resume.edit')}>
+                Resume
+            </NavLink>
+        </>
     );
 
     const dropdownContent = (

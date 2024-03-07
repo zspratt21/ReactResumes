@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ResumeOptionsRequest;
 use App\Http\Requests\ResumeProfileRequest;
 use App\Models\User;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,20 +19,19 @@ class ResumeController extends Controller
     public function updateResumeProfile(ResumeProfileRequest $request)
     {
         if ($request->user()->resumeProfile) {
-            $request->user()->resumeProfile->fill($request->validated());
+            $resume_profile = $request->user()->resumeProfile->fill($request->validated());
         } else {
-            $request->user()->resumeProfile()->create($request->validated())->save();
+            $resume_profile = $request->user()->resumeProfile()->create($request->validated());
         }
         if ((int) $request->remove_cover_photo == 1) {
-            $request->user()->resumeProfile->deleteCoverPhoto();
-            $request->user()->resumeProfile->cover_photo = null;
+            $resume_profile->deleteCoverPhoto();
+            $resume_profile->cover_photo = null;
         } elseif ($request->hasFile('file_cover_photo')) {
-            $request->user()->resumeProfile->deleteCoverPhoto();
-            $request->user()->resumeProfile->cover_photo = $request->file('file_cover_photo')->storePubliclyAs('users/'.$request->user()->id.'/cover-photo', date('U').'.'.$request->file('file_cover_photo')->clientExtension(), ['disk' => env('APP_DISK', 's3')]);
+            $resume_profile->deleteCoverPhoto();
+            $resume_profile->cover_photo = $request->file('file_cover_photo')->storePubliclyAs('users/'.$request->user()->id.'/cover-photo', date('U').'.'.$request->file('file_cover_photo')->clientExtension(), ['disk' => env('APP_DISK', 's3')]);
         }
-        $request->user()->resumeProfile->save();
-
-        return Redirect::route('profile.edit');
+        $resume_profile->save();
+        return Redirect::route('resume.edit');
     }
 
     /**
@@ -45,7 +45,19 @@ class ResumeController extends Controller
             $request->user()->resumeOptions()->create($request->validated())->save();
         }
 
-        return Redirect::route('profile.edit');
+        return Redirect::route('resume.edit');
+    }
+
+    /**
+     * Edit form for the user's resume data and options.
+     */
+    public function edit()
+    {
+        return Inertia::render('Resume/Edit', [
+            'auth.user' => auth()->user()->load('resumeProfile', 'resumeOptions', 'skills'),
+            'mustVerifyEmail' => auth()->user() instanceof MustVerifyEmail,
+            'status' => session('status'),
+        ]);
     }
 
     /**
@@ -55,7 +67,7 @@ class ResumeController extends Controller
     {
         $user = auth()->user() ? auth()->user() : User::find((int) request()->id);
         return Inertia::render('Resume/Print/Layouts/'.$user->resumeOptions->layout, [
-            'user' => $user->load('resumeProfile', 'resumeOptions'),
+            'user' => $user->load('resumeProfile', 'resumeOptions', 'skills'),
         ]);
     }
 
@@ -64,6 +76,7 @@ class ResumeController extends Controller
      */
     public function print()
     {
+        // @todo chromium url env value
         $browserShot = Browsershot::url('https://host.docker.internal:4430'.'/resume/preview?id='.auth()->id().'&chrome_key='.env('CHROMIUM_KEY'))
             ->setRemoteInstance(env('CHROMIUM_HOST', 'chromium'), env('CHROMIUM_PORT', '9222'))
             ->waitUntilNetworkIdle()
