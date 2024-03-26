@@ -24,7 +24,6 @@ export interface ResumeOptions {
     updated_at: string;
 }
 
-// @todo
 export interface Skill {
     id: number;
     name: string;
@@ -40,12 +39,13 @@ export interface SkillPriority {
     priority: number;
 }
 
-// @todo
 export interface Experience {
     id: number;
     user_id: number;
     title: string;
     entity: string;
+    image: string;
+    type: string;
     start_date: string;
     end_date: string;
     description: string;
@@ -54,11 +54,15 @@ export interface Experience {
     updated_at: string;
 }
 
-// @todo
+export interface ExperienceGroups {
+    [key: string]: Experience[];
+}
+
 export interface Milestone {
     id: number;
     experience_id: number;
-    title: string;
+    priority: number;
+    name: string;
     description: string;
     created_at: string;
     updated_at: string;

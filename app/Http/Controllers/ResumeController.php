@@ -54,7 +54,7 @@ class ResumeController extends Controller
     public function edit()
     {
         return Inertia::render('Resume/Edit', [
-            'auth.user' => auth()->user()->load('resumeProfile', 'resumeOptions', 'skills'),
+            'auth.user' => auth()->user()->load('resumeProfile', 'resumeOptions', 'skills', 'experiences.milestones'),
             'mustVerifyEmail' => auth()->user() instanceof MustVerifyEmail,
             'status' => session('status'),
         ]);
@@ -67,7 +67,7 @@ class ResumeController extends Controller
     {
         $user = auth()->user() ? auth()->user() : User::find((int) request()->id);
         return Inertia::render('Resume/Print/Layouts/'.$user->resumeOptions->layout, [
-            'user' => $user->load('resumeProfile', 'resumeOptions', 'skills'),
+            'user' => $user->load('resumeProfile', 'resumeOptions', 'skills', 'experiences.milestones'),
         ]);
     }
 

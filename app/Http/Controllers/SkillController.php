@@ -31,7 +31,7 @@ class SkillController extends Controller
         return Redirect::route('resume.edit');
     }
 
-    public function updatePriorities(SkillPriorityRequest $request)
+    public function prioritize(SkillPriorityRequest $request)
     {
         foreach ($request->priorities as $priority) {
             $request->user()->skills()->find($priority['id'])->update(['priority' => $priority['priority']]);

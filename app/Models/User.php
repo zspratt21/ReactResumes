@@ -124,4 +124,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Skill::class)->orderBy('priority');
     }
+
+    /**
+     * Get the user's experiences.
+     */
+    public function experiences(): HasMany
+    {
+        return $this->hasMany(Experience::class)->orderBy('start_date', 'desc');
+    }
 }

@@ -35,10 +35,6 @@ export default function ManageSkills({className = '', onCompletionChange}: {clas
         );
     };
 
-    useEffect(() => {
-        console.log('newSkillFormComponents', newSkillFormComponents);
-    }, [newSkillFormComponents]);
-
     const checkValidSkills = () => {
         onCompletionChange(skills.length > 0);
     }
@@ -73,7 +69,7 @@ export default function ManageSkills({className = '', onCompletionChange}: {clas
        }
 
        else {
-           post(route('skills.priorities'), {preserveScroll: true});
+           post(route('skills.prioritize'), {preserveScroll: true});
        }
 
 

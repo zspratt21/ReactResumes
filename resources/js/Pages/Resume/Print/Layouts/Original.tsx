@@ -1,13 +1,17 @@
 import {User} from "@/types";
 import {useRef} from "react";
 import Main from "@/Pages/Resume/Print/Main";
-import {Skill} from "@/types/resume";
+import {ExperienceGroups, Skill} from "@/types/resume";
+import {capitalizeFirstLetter, experienceDate, groupExperiencesByType} from "@/Helpers/resume";
+import FormatDescription from "@/Pages/Resume/Print/Partials/FormatDescription";
 
 export default function Original({user}: {user: User}) {
     const coverPhoto = user.resume_profile.cover_photo;
     const coverPhotoContainerRef = useRef<HTMLDivElement>(null);
     const nameLinksContainerRef = useRef<HTMLDivElement>(null);
     const profilePhotoContainerRef = useRef<HTMLDivElement>(null);
+    const experiencesByType: ExperienceGroups = groupExperiencesByType(user.experiences);
+
         return (
             <Main
                 user={user}
@@ -18,7 +22,7 @@ export default function Original({user}: {user: User}) {
             >
                 <div ref={coverPhotoContainerRef} className={coverPhoto ? 'p-4 hasCoverPhoto' : 'p-4'}>
                     <div
-                        className="pt-4 pb-2 text-gray-900 bg-gray-200 dark:text-white dark:bg-gray-800 hasCoverPhoto:text-white hasCoverPhoto:bg-gray-950/60 hasCoverPhoto:dark:bg-gray-950/60 rounded-lg">
+                        className="pt-4 pb-2 text-gray-900 bg-gray-200 dark:text-white dark:bg-gray-800 hasCoverPhoto:text-white hasCoverPhoto:bg-gray-950/60 hasCoverPhoto:dark:bg-gray-800/60 rounded-lg">
                         <div
                             className="flex justify-between pb-1 mx-4 border-b border-gray-900 hasCoverPhoto:border-white dark:border-white hasCoverPhoto:dark:border-white">
                             <div ref={profilePhotoContainerRef}
@@ -69,7 +73,7 @@ export default function Original({user}: {user: User}) {
                         </div>
                     </div>
                 </div>
-                <div className="p-4">
+                <div className="px-4">
                     <h2 className="text-gray-900 dark:text-white text-[30px] text-center">&#xf0ad; Skills</h2>
                     <div className="bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-500 rounded-lg">
                         <div className="flex flex-wrap justify-center">
@@ -79,8 +83,7 @@ export default function Original({user}: {user: User}) {
                                         <div
                                             className="flex space-x-1 p-1 m-1 bg-gray-100 dark:bg-gray-700 rounded-lg">
                                             <b className="flex-1">{skill.name}</b>
-                                            <img width="100%" className="max-h-[25px] max-w-fit" src={skill.icon}
-                                                 alt={skill.name}/>
+                                            <img width="100%" className="max-h-[25px] max-w-fit" src={skill.icon} alt={skill.name} rel="preload"/>
                                         </div>
                                     </a>
                                 );
@@ -88,6 +91,66 @@ export default function Original({user}: {user: User}) {
                         </div>
                     </div>
                 </div>
+
+
+                {Object.keys(experiencesByType).map(category => {
+                    let headerIconClasses = 'hidden';
+                    switch (category) {
+                        case 'experience':
+                            headerIconClasses = 'fa-solid fa-briefcase';
+                            break;
+                        case 'education':
+                            headerIconClasses = 'fa-solid fa-graduation-cap';
+                            break;
+                    }
+                    return (
+                        <div key={category} className="px-4">
+                            <h2 className="text-gray-900 dark:text-white text-[30px] text-center"><i className={headerIconClasses}></i> {capitalizeFirstLetter(category)}</h2>
+                            <div className="bg-gray-200 text-gray-600 dark:text-gray-500 dark:bg-gray-800 rounded-lg">
+                                {experiencesByType[category].map((experience, index) => {
+                                    const isLastItem = index === experiencesByType[category].length - 1;
+                                    const topClass = index === 0 ? " rounded-t-lg pt-4" : " pt-4";
+                                    const bottomClass = isLastItem && experience.milestones?.length === 0 ? " pb-4" : " pb-1";
+                                    const mainContainerClasses = "px-4" + topClass + bottomClass;
+                                    const milestoneContainerBottomClass = isLastItem ? " pb-4 rounded-b-lg" : " pb-1";
+                                    const milestoneContainerClasses = "bg-gray-100 dark:bg-gray-700 px-4" + milestoneContainerBottomClass;
+                                    return (
+                                        <div key={index}>
+                                            <div className={mainContainerClasses}>
+                                                <div className="flex justify-between">
+                                                    <div>
+                                                        <img className="max-h-[50px] h-auto w-full" src={experience.image} alt={experience.entity}/>
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <h3 className="text-[20px] text-right"><i className="fa-solid fa-address-card"></i> {experience.title}</h3>
+                                                    </div>
+                                                </div>
+                                                <div className="flex justify-between mt-1">
+                                                    <i className="">{experience.entity}</i>
+                                                    <span
+                                                        className="text-right"><i className="fa-solid fa-calendar-days"></i> {experienceDate(experience.start_date)} - {experienceDate(experience.end_date)}</span>
+                                                </div>
+                                                <div>
+                                                    <p className="text-justify leading-tight"><FormatDescription text={experience.description}/></p>
+                                                </div>
+                                            </div>
+                                            {experience.milestones?.length > 0 && (
+                                                <div className={milestoneContainerClasses}>
+                                                    {experience.milestones.map((milestone, index) => (
+                                                        <div key={index} className="">
+                                                            <u>{milestone.name}</u>
+                                                            <p className="text-justify leading-tight"><FormatDescription text={milestone.description}/></p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    );
+                })}
             </Main>
         );
 }

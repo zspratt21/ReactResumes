@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\BrowserShotTestController;
+use App\Http\Controllers\ExperienceController;
+use App\Http\Controllers\MilestoneController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\SkillController;
@@ -45,7 +47,14 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/skill', [SkillController::class, 'modify'])->name('skill.modify');
     Route::delete('/skill', [SkillController::class, 'delete'])->name('skill.delete');
-    Route::patch('/skill/priorities', [SkillController::class, 'updatePriorities'])->name('skills.priorities');
+    Route::patch('/skill/prioritize', [SkillController::class, 'prioritize'])->name('skills.prioritize');
+
+    Route::patch('/experience', [ExperienceController::class, 'modify'])->name('experience.modify');
+    Route::delete('/experience', [ExperienceController::class, 'delete'])->name('experience.delete');
+
+    Route::patch('/milestone', [MilestoneController::class, 'modify'])->name('milestone.modify');
+    Route::delete('/milestone', [MilestoneController::class, 'delete'])->name('milestone.delete');
+    Route::patch('/milestones/prioritize', [MilestoneController::class, 'prioritize'])->name('milestones.prioritize');
 });
 
 Route::middleware('ResumePreviewCheck')->group(function () {

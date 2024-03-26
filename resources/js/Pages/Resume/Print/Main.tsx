@@ -57,8 +57,7 @@ export default function Main({user, coverPhoto, coverPhotoContainerRef, nameLink
             <div className="bg-gray-100 dark:bg-gray-900 w-full">
                 <footer className="pt-2 mx-auto w-fit">
                     <div className="flex space-x-2 pt-1 pb-1 border-t-2 border-gray-200 dark:border-gray-700">
-                        <b className="text-gray-200 dark:text-gray-700 text-xl">&#xf1f9; {new Date().getFullYear()} {user.name}.
-                            Dynamic CV | Made With</b>
+                        <b className="text-gray-200 dark:text-gray-700 text-xl">&#xf1f9; {new Date().getFullYear()} {user.name}. Dynamic CV | Made With</b>
                         <div className="flex space-x-3 bg-gray-200 dark:bg-gray-700 rounded-lg py-1 px-3">
                             <a href="https://developer.mozilla.org/en-US/docs/Web/HTML">
                                 <i className="fab fa-html5 text-[#E44D26]"/>
