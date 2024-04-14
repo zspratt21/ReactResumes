@@ -10,18 +10,14 @@ import CrudContainer from "@/Pages/Resume/Partials/Crud/CrudContainer";
 import CrudWrapper from "@/Pages/Resume/Partials/Crud/CrudWrapper";
 
 
-export default function ManageSkills({className = ''}: {className?: string}) {
+export default function ManageSkills({className = '', onCompletionChange}: {className?: string, onCompletionChange: (isComplete: boolean) => void}) {
     const [editingSkill, setEditingSkill] = useState<Skill | null>(null);
     const user = usePage<PageProps>().props.auth.user;
     const [skills, setSkills] = useState<Skill[]>(user.skills);
 
-    // useEffect(() => {
-    //     setEditingSkill(null);
-    //     setskills(user.skills);
-    // }, [experience.id]);
-
     useEffect(() => {
         setSkills(user.skills || []);
+        onCompletionChange(user.skills?.length > 0);
     }, [user.skills]);
 
     const resetEditingSkill = () => {

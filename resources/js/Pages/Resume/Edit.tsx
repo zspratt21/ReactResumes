@@ -33,7 +33,8 @@ export default function Edit({ auth, mustVerifyEmail, status }: PageProps<{ must
         setResumeExperienceCompleted(isComplete);
     };
 
-    // @todo visibility based on listed components and if current open step is that component
+    // @todo style page as a step by step process where only 1 step is visible at a time with a list on the side.
+    // @todo visibility based on listed components and if current open step is that component.
 
     let visibleStep = 1;
 
@@ -77,6 +78,7 @@ export default function Edit({ auth, mustVerifyEmail, status }: PageProps<{ must
                                 Review your resume before downloading it as a PDF.
                             </p>
                             {/*    @todo iFrame here    */}
+                            <iframe className="w-full h-96 p-6" src="/resume/preview"></iframe>
                     </FormSection>
                     {resumePreviewGenerated && (
                         <PrimaryButton onClick={() => {}}>&#xf091; Generate PDF!</PrimaryButton>

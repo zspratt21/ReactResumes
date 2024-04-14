@@ -12,10 +12,9 @@ export default function ManageExperiences({className = '', onCompletionChange}: 
     const user = usePage<PageProps>().props.auth.user;
     const [editingExperience, setEditingExperience] = useState<Experience | null>(null);
 
-    const checkValidExperiences = () => {
+    useEffect(() => {
         onCompletionChange(user.experiences?.length > 0);
-    }
-    useEffect(checkValidExperiences, [user.experiences]);
+    }, [user.experiences]);
 
     const resetEditingExperience = () => {
         setEditingExperience(null);
@@ -45,7 +44,7 @@ export default function ManageExperiences({className = '', onCompletionChange}: 
                 </p>
             </header>
 
-            <CrudHeading text="Current Experiences" empty={user.experiences.length < 1}/>
+            <CrudHeading text="Current Experiences" empty={user.experiences?.length < 1}/>
             {user.experiences?.length > 0 && (
                 <CrudContainer>
                     {user.experiences.map((experience, index) => (
