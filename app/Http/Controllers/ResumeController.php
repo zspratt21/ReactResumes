@@ -6,6 +6,7 @@ use App\Http\Requests\ResumeOptionsRequest;
 use App\Http\Requests\ResumeProfileRequest;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -13,10 +14,7 @@ use Spatie\Browsershot\Browsershot;
 
 class ResumeController extends Controller
 {
-    /**
-     * Update the user's resume profile information.
-     */
-    public function updateResumeProfile(ResumeProfileRequest $request)
+    public function updateResumeProfile(ResumeProfileRequest $request): RedirectResponse
     {
         if ($request->user()->resumeProfile) {
             $resume_profile = $request->user()->resumeProfile->fill($request->validated());
@@ -31,13 +29,11 @@ class ResumeController extends Controller
             $resume_profile->cover_photo = $request->file('file_cover_photo')->storePubliclyAs('users/'.$request->user()->id.'/cover-photo', date('U').'.'.$request->file('file_cover_photo')->clientExtension(), ['disk' => env('APP_DISK', 's3')]);
         }
         $resume_profile->save();
+
         return Redirect::route('resume.edit');
     }
 
-    /**
-     * Update the user's resume options.
-     */
-    public function updateResumeOptions(ResumeOptionsRequest $request)
+    public function updateResumeOptions(ResumeOptionsRequest $request): RedirectResponse
     {
         if ($request->user()->resumeOptions) {
             $request->user()->resumeOptions->fill($request->validated())->save();
@@ -48,10 +44,7 @@ class ResumeController extends Controller
         return Redirect::route('resume.edit');
     }
 
-    /**
-     * Edit form for the user's resume data and options.
-     */
-    public function edit()
+    public function edit(): Response
     {
         return Inertia::render('Resume/Edit', [
             'auth.user' => auth()->user()->load('resumeProfile', 'resumeOptions', 'skills', 'experiences.milestones'),
@@ -60,33 +53,31 @@ class ResumeController extends Controller
         ]);
     }
 
-    /**
-     * Preview the user's resume.
-     */
     public function preview(): Response
     {
         $user = auth()->user() ? auth()->user() : User::find((int) request()->id);
+
         return Inertia::render('Resume/Print/Layouts/'.$user->resumeOptions->layout, [
             'user' => $user->load('resumeProfile', 'resumeOptions', 'skills', 'experiences.milestones'),
         ]);
     }
 
-    /**
-     * Print the user's resume to PDF.
-     */
-    public function print()
+    public function print(): \Illuminate\Http\Response
     {
-        // @todo chromium url env value
-        $browserShot = Browsershot::url('https://host.docker.internal:4430'.'/resume/preview?id='.auth()->id().'&chrome_key='.env('CHROMIUM_KEY'))
-            ->setRemoteInstance(env('CHROMIUM_HOST', 'chromium'), env('CHROMIUM_PORT', '9222'))
+        $id = auth()->id();
+        $key = config('print.chrome_key');
+        $print_url = config('print.url');
+        $browserShot = Browsershot::url("{$print_url}/resume/preview?id={$id}&chrome_key={$key}")
+            ->setRemoteInstance(config('print.chrome_host'), config('print.chrome_port'))
             ->waitUntilNetworkIdle()
             ->format('A4')
             ->showBackground()
             ->noSandbox()
             ->windowSize(1920, 1080);
 
-        header('Content-Type: application/pdf');
-        header('Content-Disposition: inline; filename="'.auth()->user()->name.' Resume '.date('F Y').'.pdf"');
-        echo $browserShot->pdf();
+        return response($browserShot->pdf())
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="'.auth()->user()->name.' Resume '.date('F Y').'.pdf"');
+
     }
 }
