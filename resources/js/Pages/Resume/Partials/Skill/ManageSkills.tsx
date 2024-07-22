@@ -15,11 +15,6 @@ export default function ManageSkills({className = '', onCompletionChange}: {clas
     const user = usePage<PageProps>().props.auth.user;
     const [skills, setSkills] = useState<Skill[]>(user.skills);
 
-    useEffect(() => {
-        setSkills(user.skills || []);
-        onCompletionChange(user.skills?.length > 0);
-    }, [user.skills]);
-
     const resetEditingSkill = () => {
         setEditingSkill(null);
     }
@@ -67,51 +62,60 @@ export default function ManageSkills({className = '', onCompletionChange}: {clas
         );
     }
 
+    useEffect(() => {
+        setSkills(user.skills || []);
+        onCompletionChange(user.skills?.length > 0);
+        const newskill = user.skills.find(skill => skill.id === editingSkill?.id);
+        setEditingSkill(newskill || null);
+    }, [user.skills]);
+
     return (
         <section className={className}>
-            <CrudHeading text="Skills" empty={skills.length < 1}/>
-            {skills.length > 0 && (
-                <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable droppableId="droppable" direction="vertical">
-                        {(provided, snapshot) => (
-                            <CrudContainer
-                                isDraggingOver={snapshot.isDraggingOver}
-                                ref={provided.innerRef}
-                                {...provided.droppableProps}
-                            >
-                                {skills.map((skill, index) => (
-                                    <Draggable key={skill.id} draggableId={skill.id.toString()} index={index}>
-                                        {(provided, snapshot) => {
-                                            return (
-                                                <CrudWrapper
-                                                    key={index}
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                >
-                                                    <CrudView
-                                                        className="flex-1"
-                                                        text={skill.name}
-                                                        setEdit={() => {
-                                                            setEditingSkill(skill)
-                                                        }}
-                                                        onDelete={() => {
-                                                            deleteSkill(skill)
-                                                        }}
-                                                    />
-                                                </CrudWrapper>
-                                            );
-                                        }}
-                                    </Draggable>
-                                ))}
-                                {provided.placeholder}
-                            </CrudContainer>
-                        )}
-                    </Droppable>
-                </DragDropContext>
-            ) || (
+            <CrudHeading text="Skills" empty={skills.length < 1} />
+            {(skills.length > 0 && (
+                <div className="">
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable droppableId="droppable" direction="vertical">
+                            {(provided, snapshot) => (
+                                <CrudContainer
+                                    isDraggingOver={snapshot.isDraggingOver}
+                                    ref={provided.innerRef}
+                                    {...provided.droppableProps}
+                                >
+                                    {skills.map((skill, index) => (
+                                        <Draggable key={skill.id} draggableId={skill.id.toString()} index={index}>
+                                            {(provided, snapshot) => {
+                                                return (
+                                                    <CrudWrapper
+                                                        key={index}
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                    >
+                                                        <CrudView
+                                                            className="flex-1"
+                                                            text={skill.name}
+                                                            setEdit={() => {
+                                                                setEditingSkill(skill);
+                                                            }}
+                                                            onDelete={() => {
+                                                                deleteSkill(skill);
+                                                            }}
+                                                        />
+                                                    </CrudWrapper>
+                                                );
+                                            }}
+                                        </Draggable>
+                                    ))}
+                                    {provided.placeholder}
+                                </CrudContainer>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                </div>
+            )) || (
                 <p className="text-gray-600 dark:text-gray-400">
-                    You haven't added any skills yet. Add one with the form below.
+                    You have not added any skills yet. Add one with the form below.
                 </p>
             )}
             <CrudSkill

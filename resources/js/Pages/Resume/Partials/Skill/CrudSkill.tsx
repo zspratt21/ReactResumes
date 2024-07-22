@@ -19,14 +19,7 @@ export default function CrudSkill({className = '', skill, resetEditingSkill}: {c
     });
     const { data, setData, post, delete: deleteRequest, errors, processing, recentlySuccessful} = useForm(generateData(skill));
 
-    useEffect(() => {
-        setData(generateData(skill));
-    }, [skill]);
-
-    // @todo determine if this is needed??
-    const [refreshKey, setRefreshKey] = useState(0);
-    const imageInputRef = useRef(null);
-
+    const imageInputRef = useRef<HTMLInputElement>(null);
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(
@@ -47,6 +40,10 @@ export default function CrudSkill({className = '', skill, resetEditingSkill}: {c
         resetEditingSkill();
     }
 
+    useEffect(() => {
+        setData(generateData(skill));
+    }, [skill]);
+
     return (
         <div className={className}>
             <form onSubmit={submit}>
@@ -63,7 +60,7 @@ export default function CrudSkill({className = '', skill, resetEditingSkill}: {c
                     <InputError message={errors.name} className="mt-1"/>
                 </div>
 
-                <div>
+                <div className="mt-2">
                     <InputLabel htmlFor="url" value="Url/Website"/>
 
                     <TextInput
@@ -76,23 +73,19 @@ export default function CrudSkill({className = '', skill, resetEditingSkill}: {c
                     <InputError message={errors.url} className="mt-1"/>
                 </div>
 
-                <div>
+                <div className="mt-2">
                     <InputLabel htmlFor="file_icon" value="Icon"/>
 
                     <ImageInput
                         ref={imageInputRef}
                         className="mt-1 block w-full"
-                        onChange={(e) => setData('file_icon', e.target.files?.[0] || data.file_icon)}
                         initialPhoto={skill?.icon || null}
+                        current_file={data.file_icon}
                         setPhotoData={(photo: File | null) => setData('file_icon', photo)}
-                        setRemoveData={(value: 0 | 1) => {
-                            if (value == 1) {
-                                setData({...data, remove_icon: value, file_icon: null});
-                            } else {
-                                setData({...data, remove_icon: value});
-                            }
-                        }}
-                        previewClassName="max-h-96 w-auto"
+                        setRemoveData={(value: 0 | 1) => setData('remove_icon', value)}
+                        previewAlt="skill icon"
+                        previewClassName="h-36 w-auto"
+                        removed={data.remove_icon}
                     />
 
                     <InputError message={errors.file_icon} className="mt-1"/>

@@ -1,6 +1,6 @@
 import {useForm, usePage} from "@inertiajs/react";
 import {PageProps} from "@/types";
-import {FormEventHandler, useEffect, useRef, useState} from "react";
+import {FormEventHandler, useEffect} from "react";
 import SaveButton from "@/Components/SaveButton";
 import {Transition} from "@headlessui/react";
 import InputLabel from "@/Components/InputLabel";
@@ -9,13 +9,14 @@ import SelectInput from "@/Components/SelectInput";
 
 export default function UpdateResumeOptions({className = '', onCompletionChange}: {className?: string, onCompletionChange: (isComplete: boolean) => void}) {
     const user = usePage<PageProps>().props.auth.user;
-    const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
+    const {
+        data, setData, post, errors, processing, recentlySuccessful,
+    } = useForm({
         font: user.resume_options?.font || 'figtree',
         color_scheme: user.resume_options?.color_scheme || 'light',
-        layout: user.resume_options?.layout || 'Original',
+        layout: user.resume_options?.layout || 'Modern',
         _method: 'patch',
     });
-    const [refreshKey, setRefreshKey] = useState(0);
     const checkValidResumeOptions = () => {
         onCompletionChange(!!user.resume_options);
     };
@@ -24,16 +25,14 @@ export default function UpdateResumeOptions({className = '', onCompletionChange}
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+        console.log('data', data);
         post(
             route('resume-options.update'),
             {
                 preserveScroll: true,
-                onSuccess: (Page) => {
-                    setRefreshKey(refreshKey + 1);
-                },
-            }
+            },
         );
-    }
+    };
 
     return (
         <section className={className}>
@@ -45,7 +44,7 @@ export default function UpdateResumeOptions({className = '', onCompletionChange}
                 </p>
             </header>
 
-            <form onSubmit={submit} className="mt-6 space-y-6" key={refreshKey}>
+            <form onSubmit={submit} className="mt-6 space-y-6">
 
                 <div className="flex flex-col sm:flex-row sm:space-x-2">
                     <div className="flex-1">
@@ -95,8 +94,7 @@ export default function UpdateResumeOptions({className = '', onCompletionChange}
                             required
                             onChange={(e) => setData('layout', e.target.value)}
                             options={{
-                                Original: 'Original',
-                                Classic: 'Classic',
+                                Modern: 'Modern',
                             }}
                         />
 

@@ -1,18 +1,22 @@
 import { useForm, usePage } from '@inertiajs/react';
-import {FormEventHandler, useEffect, useRef, useState} from "react";
-import {PageProps} from "@/types";
-import SaveButton from "@/Components/SaveButton";
-import {Transition} from "@headlessui/react";
-import InputLabel from "@/Components/InputLabel";
-import TextInput from "@/Components/TextInput";
-import InputError from "@/Components/InputError";
-import NumberInput from "@/Components/NumberInput";
-import TextAreaInput from "@/Components/TextAreaInput";
-import ImageInput from "@/Components/ImageInput";
+import {
+    FormEventHandler, useEffect, useRef, useState,
+} from 'react';
+import { Transition } from '@headlessui/react';
+import { PageProps } from '@/types';
+import SaveButton from '@/Components/SaveButton';
+import InputLabel from '@/Components/InputLabel';
+import TextInput from '@/Components/TextInput';
+import InputError from '@/Components/InputError';
+import NumberInput from '@/Components/NumberInput';
+import TextAreaInput from '@/Components/TextAreaInput';
+import ImageInput from '@/Components/ImageInput';
 
-export default function UpdateResumeProfile({className = '', onCompletionChange}: {className?: string, onCompletionChange: (isComplete: boolean) => void}) {
-    const user = usePage<PageProps>().props.auth.user;
-    const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
+export default function UpdateResumeProfile({ className = '', onCompletionChange }: {className?: string, onCompletionChange: (isComplete: boolean) => void}) {
+    const { user } = usePage<PageProps>().props.auth;
+    const {
+        data, setData, post, errors, processing, recentlySuccessful,
+    } = useForm({
         address: user.resume_profile?.address || '',
         mobile: user.resume_profile?.mobile || '',
         linkedin: user.resume_profile?.linkedin || '',
@@ -31,8 +35,6 @@ export default function UpdateResumeProfile({className = '', onCompletionChange}
         onCompletionChange(!!user.resume_profile);
     };
 
-    useEffect(checkValidResumeProfile, [user.resume_profile]);
-
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         console.log('data', data);
@@ -46,9 +48,11 @@ export default function UpdateResumeProfile({className = '', onCompletionChange}
                     setData('file_cover_photo', null);
                     setData('remove_cover_photo', 0);
                 },
-            }
+            },
         );
-    }
+    };
+
+    useEffect(checkValidResumeProfile, [user.resume_profile]);
 
     return (
         <section className={className}>
@@ -62,7 +66,7 @@ export default function UpdateResumeProfile({className = '', onCompletionChange}
 
             <form onSubmit={submit} className="mt-6 space-y-6" key={refreshKey}>
                 <div>
-                    <InputLabel htmlFor="address" value="Address"/>
+                    <InputLabel htmlFor="address" value="Address" />
 
                     <TextInput
                         id="address"
@@ -73,11 +77,11 @@ export default function UpdateResumeProfile({className = '', onCompletionChange}
                         required
                     />
 
-                    <InputError className="mt-2" message={errors.address}/>
+                    <InputError className="mt-2" message={errors.address} />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="mobile" value="Mobile"/>
+                    <InputLabel htmlFor="mobile" value="Mobile" />
 
                     <NumberInput
                         id="mobile"
@@ -87,11 +91,11 @@ export default function UpdateResumeProfile({className = '', onCompletionChange}
                         placeholder="&#xf2a0;"
                     />
 
-                    <InputError className="mt-2" message={errors.address}/>
+                    <InputError className="mt-2" message={errors.address} />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="linkedin" value="LinkedIn"/>
+                    <InputLabel htmlFor="linkedin" value="LinkedIn" />
 
                     <TextInput
                         id="linkedin"
@@ -101,11 +105,11 @@ export default function UpdateResumeProfile({className = '', onCompletionChange}
                         placeholder="&#xf08c;"
                     />
 
-                    <InputError className="mt-2" message={errors.linkedin}/>
+                    <InputError className="mt-2" message={errors.linkedin} />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="github" value="GitHub"/>
+                    <InputLabel htmlFor="github" value="GitHub" />
 
                     <TextInput
                         id="github"
@@ -115,11 +119,11 @@ export default function UpdateResumeProfile({className = '', onCompletionChange}
                         placeholder="&#xf09b;"
                     />
 
-                    <InputError className="mt-2" message={errors.github}/>
+                    <InputError className="mt-2" message={errors.github} />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="twitter" value="Twitter"/>
+                    <InputLabel htmlFor="twitter" value="Twitter" />
 
                     <TextInput
                         id="twitter"
@@ -129,11 +133,11 @@ export default function UpdateResumeProfile({className = '', onCompletionChange}
                         placeholder="&#xf099;"
                     />
 
-                    <InputError className="mt-2" message={errors.twitter}/>
+                    <InputError className="mt-2" message={errors.twitter} />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="instagram" value="Instagram"/>
+                    <InputLabel htmlFor="instagram" value="Instagram" />
 
                     <TextInput
                         id="instagram"
@@ -143,11 +147,11 @@ export default function UpdateResumeProfile({className = '', onCompletionChange}
                         placeholder="&#xf16d;"
                     />
 
-                    <InputError className="mt-2" message={errors.instagram}/>
+                    <InputError className="mt-2" message={errors.instagram} />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="salesforce" value="Salesforce"/>
+                    <InputLabel htmlFor="salesforce" value="Salesforce" />
 
                     <TextInput
                         id="salesforce"
@@ -157,11 +161,11 @@ export default function UpdateResumeProfile({className = '', onCompletionChange}
                         placeholder="&#xf83b;"
                     />
 
-                    <InputError className="mt-2" message={errors.salesforce}/>
+                    <InputError className="mt-2" message={errors.salesforce} />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="introduction" value="Introduction"/>
+                    <InputLabel htmlFor="introduction" value="Introduction" />
 
                     <TextAreaInput
                         id="introduction"
@@ -173,37 +177,29 @@ export default function UpdateResumeProfile({className = '', onCompletionChange}
                         required
                     />
 
-                    <InputError className="mt-2" message={errors.introduction}/>
+                    <InputError className="mt-2" message={errors.introduction} />
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="file_cover_photo" value="Cover Photo"/>
+                    <InputLabel htmlFor="file_cover_photo" value="Cover Photo" />
 
                     <ImageInput
-                        alt="Cover Photo"
                         ref={imageInputRef}
-                        initialPhoto={user.resume_profile?.cover_photo}
-                        setPhotoData={(file: File | null) => {
-                            setData({...data, file_cover_photo: file});
-                            console.log('file', file);
-                            console.log(data);
-                        }}
-                        setRemoveData={(value: 0 | 1) => {
-                            if (value == 1) {
-                                setData({...data, remove_cover_photo: value, file_cover_photo: null});
-                            } else {
-                                setData({...data, remove_cover_photo: value});
-                            }
-                        }}
-                        id="file_cover_photo"
                         className="mt-1 block w-full"
+                        initialPhoto={user.resume_profile?.cover_photo}
+                        current_file={data.file_cover_photo}
+                        setPhotoData={(file: File | null) => setData('file_cover_photo', file)}
+                        setRemoveData={(value: 0 | 1) => setData('remove_cover_photo', value)}
+                        previewAlt="Cover Photo"
+                        previewClassName="min-h-36 max-h-96 w-auto"
+                        removed={data.remove_cover_photo}
                     />
 
-                    <InputError className="mt-2" message={errors.file_cover_photo}/>
+                    <InputError className="mt-2" message={errors.file_cover_photo} />
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <SaveButton disabled={processing}/>
+                    <SaveButton disabled={processing} />
 
                     <Transition
                         show={recentlySuccessful}
