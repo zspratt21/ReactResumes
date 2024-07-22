@@ -1,6 +1,7 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
-import plugin from "tailwindcss/plugin";
+import plugin from 'tailwindcss/plugin';
+import scrollbarPlugin from 'tailwind-scrollbar';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -23,7 +24,9 @@ export default {
     plugins: [
         forms,
         plugin(function ({ addVariant }) {
-            addVariant('hasCoverPhoto', '.hasCoverPhoto &')
-        })
+            addVariant('hasCoverPhoto', '.hasCoverPhoto &');
+            addVariant('selected', ['.selected &', '&.selected']);
+        }),
+        scrollbarPlugin,
     ],
 };

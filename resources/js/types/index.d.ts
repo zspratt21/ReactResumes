@@ -1,4 +1,6 @@
-import {Experience, ResumeOptions, ResumeProfile, Skill} from "@/types/resume";
+import {
+    Experience, ResumeOptions, ResumeProfile, Skill,
+} from '@/types/resume';
 
 export interface User {
     id: number;

@@ -34,11 +34,6 @@ export interface Skill {
     updated_at: string;
 }
 
-export interface SkillPriority {
-    id: number;
-    priority: number;
-}
-
 export interface Experience {
     id: number;
     user_id: number;

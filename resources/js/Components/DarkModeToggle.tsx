@@ -3,15 +3,6 @@ import {useState, useEffect, ButtonHTMLAttributes} from 'react';
 export default function DarkModeToggle(props: ButtonHTMLAttributes<HTMLButtonElement>) {
     const [isDarkMode, setIsDarkMode] = useState(false);
 
-    const toggleDarkMode = () => {
-        setIsDarkMode((prevMode) => {
-            const newMode = !prevMode;
-            localStorage.setItem('color-theme', newMode ? 'dark' : 'light');
-            toggleClass();
-            return newMode;
-        });
-    };
-
     function toggleClass() {
         if (
             localStorage.getItem('color-theme') === 'dark' ||
@@ -23,6 +14,15 @@ export default function DarkModeToggle(props: ButtonHTMLAttributes<HTMLButtonEle
             document.documentElement.classList.remove('dark');
         }
     }
+
+    const toggleDarkMode = () => {
+        setIsDarkMode((prevMode) => {
+            const newMode = !prevMode;
+            localStorage.setItem('color-theme', newMode ? 'dark' : 'light');
+            toggleClass();
+            return newMode;
+        });
+    };
 
     useEffect(() => {
         const storedTheme = localStorage.getItem('color-theme');

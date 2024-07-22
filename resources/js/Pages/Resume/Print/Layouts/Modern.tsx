@@ -4,8 +4,11 @@ import Main from "@/Pages/Resume/Print/Main";
 import {ExperienceGroups, Skill} from "@/types/resume";
 import {capitalizeFirstLetter, experienceDate, groupExperiencesByType} from "@/Helpers/resume";
 import FormatDescription from "@/Pages/Resume/Print/Partials/FormatDescription";
+import Mobile from "@/Pages/Resume/Print/Partials/Mobile";
+import Address from "@/Pages/Resume/Print/Partials/Address";
+import Email from "@/Pages/Resume/Print/Partials/Email";
 
-export default function Original({user}: {user: User}) {
+export default function Modern({user}: {user: User}) {
     const coverPhoto = user.resume_profile.cover_photo;
     const coverPhotoContainerRef = useRef<HTMLDivElement>(null);
     const nameLinksContainerRef = useRef<HTMLDivElement>(null);
@@ -54,16 +57,9 @@ export default function Original({user}: {user: User}) {
                                 <h2 className="text-[30px] leading-[30px]">About Me</h2>
                             </div>
                             <div className="flex space-x-2">
-                                <a href={'https://www.google.com/maps/search/?api=1&query=' + user.resume_profile.address}>
-                                    <h3><i
-                                        className="fa-solid fa-location-dot text-[crimson]"></i> {user.resume_profile.address}
-                                    </h3></a>
-                                <a href={'tel:' + user.resume_profile.mobile}><h3><i
-                                    className="fa-solid fa-phone-volume text-[limegreen]"></i> {user.resume_profile.mobile}
-                                </h3></a>
-                                <a href={'mailto:' + user.email}><h3><i
-                                    className="fa-solid fa-envelope text-[sandybrown]"></i> {user.email}</h3>
-                                </a>
+                                <Address address={user.resume_profile.address}/>
+                                <Mobile mobile={user.resume_profile.mobile}/>
+                                <Email email={user.email}/>
                             </div>
                         </div>
                         <div className="pt-1 px-2">
@@ -83,7 +79,9 @@ export default function Original({user}: {user: User}) {
                                         <div
                                             className="flex space-x-1 p-1 m-1 bg-gray-100 dark:bg-gray-700 rounded-lg">
                                             <b className="flex-1">{skill.name}</b>
-                                            <img width="100%" className="max-h-[25px] max-w-fit" src={skill.icon} alt={skill.name} rel="preload"/>
+                                            {!!skill.icon && (
+                                                <img width="100%" className="max-h-[25px] max-w-fit" src={skill.icon} alt={skill.name} rel="preload"/>
+                                            )}
                                         </div>
                                     </a>
                                 );
@@ -91,8 +89,6 @@ export default function Original({user}: {user: User}) {
                         </div>
                     </div>
                 </div>
-
-
                 {Object.keys(experiencesByType).map(category => {
                     let headerIconClasses = 'hidden';
                     switch (category) {
@@ -118,9 +114,11 @@ export default function Original({user}: {user: User}) {
                                         <div key={index}>
                                             <div className={mainContainerClasses}>
                                                 <div className="flex justify-between">
-                                                    <div>
-                                                        <img className="max-h-[50px] h-auto w-full" src={experience.image} alt={experience.entity}/>
-                                                    </div>
+                                                    {!!experience.image && (
+                                                        <div>
+                                                            <img className="max-h-[50px] h-auto w-full" src={experience.image} alt={experience.entity}/>
+                                                        </div>
+                                                    )}
                                                     <div className="flex-1">
                                                         <h3 className="text-[20px] text-right"><i className="fa-solid fa-address-card"></i> {experience.title}</h3>
                                                     </div>
