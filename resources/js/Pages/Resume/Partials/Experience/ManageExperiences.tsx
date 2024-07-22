@@ -14,6 +14,8 @@ export default function ManageExperiences({className = '', onCompletionChange}: 
 
     useEffect(() => {
         onCompletionChange(user.experiences?.length > 0);
+        const newExperience = user.experiences?.find((experience) => experience.id === editingExperience?.id);
+        setEditingExperience(newExperience || null);
     }, [user.experiences]);
 
     const resetEditingExperience = () => {

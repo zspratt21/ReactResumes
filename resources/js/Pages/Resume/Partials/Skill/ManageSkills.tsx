@@ -65,8 +65,8 @@ export default function ManageSkills({className = '', onCompletionChange}: {clas
     useEffect(() => {
         setSkills(user.skills || []);
         onCompletionChange(user.skills?.length > 0);
-        const newskill = user.skills.find(skill => skill.id === editingSkill?.id);
-        setEditingSkill(newskill || null);
+        const newSkill = user.skills.find(skill => skill.id === editingSkill?.id);
+        setEditingSkill(newSkill || null);
     }, [user.skills]);
 
     return (
