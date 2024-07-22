@@ -84,7 +84,7 @@ export default function ManageSkills({className = '', onCompletionChange}: {clas
                                 >
                                     {skills.map((skill, index) => (
                                         <Draggable key={skill.id} draggableId={skill.id.toString()} index={index}>
-                                            {(provided, snapshot) => {
+                                            {(provided) => {
                                                 return (
                                                     <CrudWrapper
                                                         key={index}

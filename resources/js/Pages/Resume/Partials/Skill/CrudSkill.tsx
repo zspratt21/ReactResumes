@@ -1,6 +1,6 @@
 import {Skill} from "@/types/resume";
 import {useForm} from "@inertiajs/react";
-import React, {FormEventHandler, useEffect, useRef, useState} from "react";
+import React, {FormEventHandler, useEffect, useRef} from "react";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
@@ -17,7 +17,7 @@ export default function CrudSkill({className = '', skill, resetEditingSkill}: {c
         remove_icon: 0 as 1 | 0,
         _method: 'patch',
     });
-    const { data, setData, post, delete: deleteRequest, errors, processing, recentlySuccessful} = useForm(generateData(skill));
+    const { data, setData, post, errors, processing} = useForm(generateData(skill));
 
     const imageInputRef = useRef<HTMLInputElement>(null);
     const submit: FormEventHandler = (e) => {
@@ -26,7 +26,7 @@ export default function CrudSkill({className = '', skill, resetEditingSkill}: {c
             route('skill.modify'),
             {
                 preserveScroll: true,
-                onSuccess: (Page) => {
+                onSuccess: () => {
                     if (!skill) {
                         setData(generateData(null));
                     }
