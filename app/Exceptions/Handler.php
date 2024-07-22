@@ -20,12 +20,10 @@ class Handler extends ExceptionHandler
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
     public function register(): void
     {
-        if (env('SENTRY_LARAVEL_DSN') == null || env('SENTRY_LARAVEL_DSN') == 'none') {
+        if (empty(config('sentry.dsn'))) {
             $this->reportable(function (Throwable $e) {
                 //
             });
