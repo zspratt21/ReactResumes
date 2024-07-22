@@ -5,7 +5,10 @@
         "dev": "vite",
         "stop-vite-container": "docker-compose down vite && rm ./public/hot -f && npm run build",
         "build": "tsc && vite build",
-        "gen_key": "php -r \"echo bin2hex(random_bytes(16)).\\\"\\n\\\";\""
+        "build-no-check": "vite build",
+        "gen_key": "php -r \"echo bin2hex(random_bytes(16)).\\\"\\n\\\";\"",
+        "tinker": "php artisan tinker",
+        "pint": "./vendor/bin/pint"
     },
     "devDependencies": {
         "@headlessui/react": "^1.4.2",
@@ -21,6 +24,7 @@
         "postcss": "^8.4.31",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "tailwind-scrollbar": "^3.1.0",
         "tailwindcss": "^3.2.1",
         "typescript": "^5.0.2",
         "vite": "^5.0.0"
