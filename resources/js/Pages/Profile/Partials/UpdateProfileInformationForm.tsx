@@ -25,8 +25,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
             route('profile.update'),
             {
                 preserveScroll: true,
-                onSuccess: (Page) => {
-                    console.log('onSuccess', Page);
+                onSuccess: () => {
                     setData('file_avatar', null);
                     setData('remove_avatar', 0);
                 },
@@ -113,7 +112,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         setRemoveData={(value: 0 | 1) => setData('remove_avatar', value)}
                         id="file_avatar"
                         previewAlt="Profile Photo"
-                        previewClassName="h-36 w-auto"
+                        previewClassName="h-66 w-auto"
                         removed={data.remove_avatar}
                     />
 
