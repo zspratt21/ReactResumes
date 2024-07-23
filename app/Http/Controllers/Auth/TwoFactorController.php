@@ -140,7 +140,7 @@ class TwoFactorController extends Controller
         $google2fa = new Google2FA();
         $secret_key = $google2fa->generateSecretKey(32);
         $otpAuthUrl = $google2fa->getQRCodeUrl(
-            env('APP_NAME'),
+            config('app.name'),
             $user->email,
             $secret_key
         );
