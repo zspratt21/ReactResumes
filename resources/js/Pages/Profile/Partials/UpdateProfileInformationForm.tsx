@@ -3,7 +3,7 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
-import { FormEventHandler, useRef, useState } from 'react';
+import { FormEventHandler, useRef } from 'react';
 import { PageProps } from '@/types';
 import SaveButton from "@/Components/SaveButton";
 import ImageInput from "@/Components/ImageInput";
@@ -17,7 +17,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         remove_avatar: 0 as 1 | 0,
         _method: 'patch',
     });
-    const [refreshKey, setRefreshKey] = useState(0);
     const imageInputRef = useRef(null);
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -28,7 +27,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 preserveScroll: true,
                 onSuccess: (Page) => {
                     console.log('onSuccess', Page);
-                    setRefreshKey(refreshKey + 1);
                     setData('file_avatar', null);
                     setData('remove_avatar', 0);
                 },
@@ -46,7 +44,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 </p>
             </header>
 
-            <form onSubmit={submit} className="mt-6 space-y-6" key={refreshKey}>
+            <form onSubmit={submit} className="mt-6 space-y-6">
                 <input type="hidden" name="_method" value="patch"/>
                 <div>
                     <InputLabel htmlFor="name" value="Name"/>
@@ -107,24 +105,16 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputLabel htmlFor="file_avatar" value="Profile Photo"/>
 
                     <ImageInput
-                        alt="Profile Photo"
                         ref={imageInputRef}
-                        initialPhoto={user.avatar}
-                        setPhotoData={(file: File | null) => {
-                            setData({...data, file_avatar: file});
-                            console.log('file', file);
-                            console.log(data);
-                        }}
-                        setRemoveData={(value: 0 | 1) => {
-                            if(value == 1) {
-                                setData({...data, remove_avatar: value, file_avatar: null});
-                            }
-                            else {
-                                setData({...data, remove_avatar: value});
-                            }
-                        }}
-                        id="file_avatar"
                         className="mt-1 block w-full"
+                        initialPhoto={user.avatar}
+                        current_file={data.file_avatar}
+                        setPhotoData={(photo: File | null) => setData('file_avatar', photo)}
+                        setRemoveData={(value: 0 | 1) => setData('remove_avatar', value)}
+                        id="file_avatar"
+                        previewAlt="Profile Photo"
+                        previewClassName="h-36 w-auto"
+                        removed={data.remove_avatar}
                     />
 
                     <InputError className="mt-2" message={errors.file_avatar}/>

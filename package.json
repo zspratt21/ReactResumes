@@ -6,6 +6,9 @@
         "stop-vite-container": "docker-compose down vite && rm ./public/hot -f && npm run build",
         "build": "tsc && vite build",
         "build-no-check": "vite build",
+        "docker-build-web": "docker-compose build web --no-cache",
+        "docker-db-import": "docker-compose exec db sh -c 'mysql -u root -p\"$MYSQL_ROOT_PASSWORD\" \"$MYSQL_DATABASE\" < /dumps/dump.sql'",
+        "docker-db-dump": "docker-compose exec db sh -c 'mysqldump -u root -p\"$MYSQL_ROOT_PASSWORD\" \"$MYSQL_DATABASE\" > /dumps/dump.sql'",
         "gen_key": "php -r \"echo bin2hex(random_bytes(16)).\\\"\\n\\\";\"",
         "tinker": "php artisan tinker",
         "pint": "./vendor/bin/pint"
