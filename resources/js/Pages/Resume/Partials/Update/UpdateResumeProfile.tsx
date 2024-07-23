@@ -29,7 +29,6 @@ export default function UpdateResumeProfile({ className = '', onCompletionChange
         remove_cover_photo: 0 as 1 | 0,
         _method: 'patch',
     });
-    const [refreshKey, setRefreshKey] = useState(0);
     const imageInputRef = useRef(null);
     const checkValidResumeProfile = () => {
         onCompletionChange(!!user.resume_profile);
@@ -37,16 +36,12 @@ export default function UpdateResumeProfile({ className = '', onCompletionChange
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        console.log('data', data);
         post(
             route('resume-profile.update'),
             {
                 preserveScroll: true,
-                onSuccess: (Page) => {
-                    console.log('onSuccess', Page);
-                    setRefreshKey(refreshKey + 1);
-                    setData('file_cover_photo', null);
-                    setData('remove_cover_photo', 0);
+                onSuccess: () => {
+                    setData({...data, file_cover_photo: null, remove_cover_photo: 0});
                 },
             },
         );
@@ -64,7 +59,7 @@ export default function UpdateResumeProfile({ className = '', onCompletionChange
                 </p>
             </header>
 
-            <form onSubmit={submit} className="mt-6 space-y-6" key={refreshKey}>
+            <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
                     <InputLabel htmlFor="address" value="Address" />
 
