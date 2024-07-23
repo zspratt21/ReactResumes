@@ -3,7 +3,7 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
-import {FormEventHandler, useEffect, useRef} from 'react';
+import {FormEventHandler, useRef} from 'react';
 import { PageProps } from '@/types';
 import SaveButton from "@/Components/SaveButton";
 import ImageInput from "@/Components/ImageInput";

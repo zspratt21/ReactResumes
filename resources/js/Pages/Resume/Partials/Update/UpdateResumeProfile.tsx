@@ -1,6 +1,6 @@
 import { useForm, usePage } from '@inertiajs/react';
 import {
-    FormEventHandler, useEffect, useRef, useState,
+    FormEventHandler, useEffect, useRef
 } from 'react';
 import { Transition } from '@headlessui/react';
 import { PageProps } from '@/types';
