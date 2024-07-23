@@ -23,7 +23,7 @@ class ExperienceController extends Controller
             $experience->image = null;
         } elseif ($request->hasFile('file_image')) {
             $experience->deleteImage();
-            $experience->image = $request->file('file_image')->storePubliclyAs('users/'.$request->user()->id.'/experiences', date('U').'.'.$request->file('file_image')->clientExtension(), ['disk' => env('APP_DISK', 's3')]);
+            $experience->image = $request->file('file_image')->storePubliclyAs('users/'.$request->user()->id.'/experiences', date('U').'.'.$request->file('file_image')->clientExtension());
         }
         $experience->save();
 

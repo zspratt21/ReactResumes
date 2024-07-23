@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/search/users', function (Request $request) {
     $search = User::search($request->query('query'))->get();
+
     return $search->map(function ($user) {
         return [
             'name' => $user->name,

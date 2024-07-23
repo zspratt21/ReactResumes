@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasFileAttribute;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 
 class ResumeProfile extends Model
 {
+    use HasFileAttribute;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -49,9 +52,7 @@ class ResumeProfile extends Model
      */
     public function coverPhoto(): Attribute
     {
-        return new Attribute(function ($value) {
-            return $value ? env('APP_DISK_URL').'/'.$value : null;
-        });
+        return $this->fileAttribute();
     }
 
     /**
@@ -59,11 +60,7 @@ class ResumeProfile extends Model
      */
     public function deleteCoverPhoto(): bool
     {
-        if (! $this->getRawOriginal('cover_photo')) {
-            return true;
-        }
-
-        return Storage::disk(env('APP_DISK', 's3'))->delete($this->getRawOriginal('cover_photo'));
+        return $this->deleteFile('cover_photo');
     }
 
     /**

@@ -19,7 +19,6 @@ use PragmaRX\Google2FA\Google2FA;
 
 class TwoFactorController extends Controller
 {
-
     /**
      * Get the hash of the current two-factor token.
      */

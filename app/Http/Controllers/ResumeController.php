@@ -26,7 +26,7 @@ class ResumeController extends Controller
             $resume_profile->cover_photo = null;
         } elseif ($request->hasFile('file_cover_photo')) {
             $resume_profile->deleteCoverPhoto();
-            $resume_profile->cover_photo = $request->file('file_cover_photo')->storePubliclyAs('users/'.$request->user()->id.'/cover-photo', date('U').'.'.$request->file('file_cover_photo')->clientExtension(), ['disk' => env('APP_DISK', 's3')]);
+            $resume_profile->cover_photo = $request->file('file_cover_photo')->storePubliclyAs('users/'.$request->user()->id.'/cover-photo', date('U').'.'.$request->file('file_cover_photo')->clientExtension());
         }
         $resume_profile->save();
 

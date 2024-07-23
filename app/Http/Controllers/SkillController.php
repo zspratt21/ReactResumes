@@ -24,7 +24,7 @@ class SkillController extends Controller
             $skill->icon = null;
         } elseif ($request->hasFile('file_icon')) {
             $skill->deleteIcon();
-            $skill->icon = $request->file('file_icon')->storePubliclyAs('users/'.$request->user()->id.'/skills', date('U').'.'.$request->file('file_icon')->clientExtension(), ['disk' => env('APP_DISK', 's3')]);
+            $skill->icon = $request->file('file_icon')->storePubliclyAs('users/'.$request->user()->id.'/skills', date('U').'.'.$request->file('file_icon')->clientExtension());
         }
         $skill->save();
 

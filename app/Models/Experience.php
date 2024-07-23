@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasFileAttribute;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,8 @@ use Illuminate\Support\Facades\Storage;
 
 class Experience extends Model
 {
+    use HasFileAttribute;
+
     protected $fillable = [
         'title',
         'entity',
@@ -37,9 +40,7 @@ class Experience extends Model
 
     public function image(): Attribute
     {
-        return new Attribute(function ($value) {
-            return $value ? env('APP_DISK_URL').'/'.$value : null;
-        });
+        return $this->fileAttribute();
     }
 
     /**
@@ -47,17 +48,13 @@ class Experience extends Model
      */
     public function deleteImage(): bool
     {
-        if (! $this->getRawOriginal('image')) {
-            return true;
-        }
-
-        return Storage::disk(env('APP_DISK', 's3'))->delete($this->getRawOriginal('image'));
+        return $this->deleteFile('image');
     }
 
     /**
      * Delete the experience and it's associated image from storage.
      */
-    public function delete()
+    public function delete(): ?bool
     {
         $this->deleteImage();
         $this->milestones()->delete();

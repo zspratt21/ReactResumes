@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\HasFileAttribute;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Storage;
 
 class Skill extends Model
 {
+    use HasFileAttribute;
+
     protected $fillable = [
         'name',
         'icon',
@@ -27,19 +29,12 @@ class Skill extends Model
 
     public function icon(): Attribute
     {
-        return new Attribute(function ($value) {
-            return $value ? env('APP_DISK_URL').'/'.$value : null;
-        });
+        return $this->fileAttribute();
     }
 
     public function deleteIcon(): bool
     {
-        // @todo consider keeping this order or order of resume profile
-        if ($this->getRawOriginal('icon')) {
-            return Storage::disk(env('APP_DISK', 's3'))->delete($this->getRawOriginal('icon'));
-        }
-
-        return true;
+        return $this->deleteFile('icon');
     }
 
     /**
