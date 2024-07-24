@@ -181,7 +181,7 @@ export default function UpdateResumeProfile({ className = '', onCompletionChange
                     <ImageInput
                         ref={imageInputRef}
                         className="mt-1 block w-full"
-                        initialPhoto={user.resume_profile?.cover_photo}
+                        initialPhoto={user.resume_profile?.cover_photo ?? null}
                         current_file={data.file_cover_photo}
                         setPhotoData={(file: File | null) => setData('file_cover_photo', file)}
                         setRemoveData={(value: 0 | 1) => setData('remove_cover_photo', value)}
