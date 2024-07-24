@@ -14,6 +14,12 @@ use Spatie\Browsershot\Browsershot;
 
 class ResumeController extends Controller
 {
+    protected function getResumeName(string $name): string
+    {
+        $date = date('F Y');
+        return "{$name} Resume {$date}";
+    }
+
     public function updateResumeProfile(ResumeProfileRequest $request): RedirectResponse
     {
         if ($request->user()->resumeProfile) {
@@ -56,10 +62,11 @@ class ResumeController extends Controller
     public function preview(): Response
     {
         $user = auth()->user() ? auth()->user() : User::find((int) request()->id);
+        $layout = $user->resumeOptions->layout ?? 'Modern';
 
-        return Inertia::render('Print/Resume/Layouts/'.$user->resumeOptions->layout, [
+        return Inertia::render("Print/Resume/Layouts/{$layout}", [
             'user' => $user->load('resumeProfile', 'resumeOptions', 'skills', 'experiences.milestones'),
-            'customTitle' => $user->name.' Resume '.date('F Y'),
+            'customTitle' => $this->getResumeName($user->name),
         ]);
     }
 
@@ -78,7 +85,6 @@ class ResumeController extends Controller
 
         return response($browserShot->pdf())
             ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'inline; filename="'.auth()->user()->name.' Resume '.date('F Y').'.pdf"');
-
+            ->header('Content-Disposition', "inline; filename=\"{$this->getResumeName(auth()->user()->name)}.pdf\"");
     }
 }
