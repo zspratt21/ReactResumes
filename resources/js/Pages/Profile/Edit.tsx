@@ -3,9 +3,9 @@ import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 import ConfigureTwoFactorForm from './Partials/ConfigureTwoFactorForm';
-import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import HeaderHeading from "@/Components/HeaderHeading";
+import AppHead from "@/Components/AppHead";
 
 export default function Edit({ auth, mustVerifyEmail, status }: PageProps<{ mustVerifyEmail: boolean, status?: string }>) {
     return (
@@ -13,7 +13,7 @@ export default function Edit({ auth, mustVerifyEmail, status }: PageProps<{ must
             user={auth.user}
             header={<HeaderHeading text="Profile"/>}
         >
-            <Head title="Profile" />
+            <AppHead title="Profile" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">

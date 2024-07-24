@@ -11,6 +11,8 @@ import { dom, library } from '@fortawesome/fontawesome-svg-core';
 import { User } from '@/types';
 import faTailWind from '@/Icons/Brands/Tailwind';
 import faPuppeteer from '@/Icons/Brands/Puppeteer';
+import { Head } from '@inertiajs/react'
+import AppHead from "@/Components/AppHead";
 
 export default function Main({
     user, coverPhoto, coverPhotoContainerRef, nameLinksContainerRef, profilePhotoContainerRef,
@@ -22,6 +24,9 @@ export default function Main({
     nameLinksContainerRef: RefObject<HTMLDivElement>,
     profilePhotoContainerRef: RefObject<HTMLDivElement>,
 }>) {
+    const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+    const currentYear = new Date().getFullYear();
+    const title = `${user.name} Resume ${currentMonth} ${currentYear}`;
     const containerRef = useRef<HTMLDivElement>(null);
     library.add(faTailWind, faPuppeteer, faHtml5, faReact, faLaravel, faLinkedinIn, faGithub, faTwitter, faInstagram, faSalesforce);
     dom.watch();
@@ -52,6 +57,7 @@ export default function Main({
 
     return (
         <div className={`${user.resume_options.color_scheme} min-h-fit bg-gray-100 dark:bg-gray-900 flex flex-col ${user.resume_options.font}`} ref={containerRef}>
+            <AppHead/>
             <div className="w-full flex-1 bg-gray-100 dark:bg-gray-900">
                 <div className="min-h-full w-full">
                     <main>

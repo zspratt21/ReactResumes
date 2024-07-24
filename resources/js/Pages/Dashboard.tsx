@@ -1,10 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
 import {PageProps, User} from '@/types';
 import HeaderHeading from "@/Components/HeaderHeading";
 import SearchComponent from "@/Components/SearchInput";
 import {useState} from "react";
 import RecoveryCodes, {RecoveryCodeProps} from "@/Pages/Auth/RecoveryCodes";
+import AppHead from "@/Components/AppHead";
 
 interface DashboardProps extends PageProps, RecoveryCodeProps {}
 
@@ -16,7 +16,7 @@ export default function Dashboard({ auth, recoveryCodes }: DashboardProps) {
             user={auth.user}
             header={<HeaderHeading text="Dashboard"/> }
         >
-            <Head title="Dashboard" />
+            <AppHead title="Dashboard" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

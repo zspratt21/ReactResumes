@@ -57,8 +57,9 @@ class ResumeController extends Controller
     {
         $user = auth()->user() ? auth()->user() : User::find((int) request()->id);
 
-        return Inertia::render('Resume/Print/Layouts/'.$user->resumeOptions->layout, [
+        return Inertia::render('Print/Resume/Layouts/'.$user->resumeOptions->layout, [
             'user' => $user->load('resumeProfile', 'resumeOptions', 'skills', 'experiences.milestones'),
+            'customTitle' => $user->name.' Resume '.date('F Y'),
         ]);
     }
 

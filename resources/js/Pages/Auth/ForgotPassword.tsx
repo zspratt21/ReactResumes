@@ -2,10 +2,11 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import FullPageForm from "@/Components/FullPageForm";
 import HeaderHeading from "@/Components/HeaderHeading";
+import AppHead from "@/Components/AppHead";
 
 export default function ForgotPassword({ status }: { status?: string }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -20,7 +21,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
     return (
         <GuestLayout header={<HeaderHeading text="Forgotten Password"/>}>
-            <Head title="Forgot Password" />
+            <AppHead title="Forgot Password" />
             <FullPageForm>
                 <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                     Forgot your password? No problem. Just let us know your email address and we will email you a password
