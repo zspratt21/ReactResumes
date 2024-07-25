@@ -60,7 +60,11 @@ class ProfileController extends Controller
         }
         $request->user()->save();
 
-        return Redirect::back();
+        if (url()->previous() === route('resume.edit')) {
+            return Redirect::route('resume.edit');
+        }
+
+        return Redirect::route('profile.edit');
     }
 
     /**
