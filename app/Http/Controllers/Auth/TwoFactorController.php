@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use Inertia\Inertia;
 use Inertia\Response;
+use PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException;
+use PragmaRX\Google2FA\Exceptions\InvalidCharactersException;
+use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
 use PragmaRX\Google2FA\Google2FA;
 
 class TwoFactorController extends Controller
@@ -34,13 +37,15 @@ class TwoFactorController extends Controller
     /**
      * Process a successful two-factor authentication attempt.
      *
-     * @param  User  $user The user that successfully authenticated.
+     * @param  User  $user  The user that successfully authenticated.
      */
     public function process2faSuccess(User $user): void
     {
         Auth::login($user);
-        Redis::del($this->getTokenHash());
-        session()->forget(['two_factor_token', 'two_factor_token_created_at']);
+        if (session()->exists('two_factor_token')) {
+            Redis::del($this->getTokenHash());
+            session()->forget(['two_factor_token', 'two_factor_token_created_at']);
+        }
         session()->regenerate();
     }
 
@@ -66,7 +71,7 @@ class TwoFactorController extends Controller
         $session_token = Redis::get($this->getTokenHash());
         if ($session_token) {
             $user = User::where('email', $session_token)->first();
-            if ($user->exists()) {
+            if ($user) {
                 if (request()->input('isRecovery')) {
                     $codes = json_decode($user->two_factor_recovery_codes);
                     if (in_array(request()->input('code'), $codes)) {
@@ -95,18 +100,17 @@ class TwoFactorController extends Controller
     /**
      * Validate a two-factor authentication attempt.
      *
-     * @param  string  $two_factor_secret The user's two-factor secret.
-     * @param  string  $code The two-factor code to validate.
+     * @param  string  $two_factor_secret  The user's two-factor secret.
+     * @param  string  $code  The two-factor code to validate.
      */
     public function validateAttempt(string $two_factor_secret, string $code): bool
     {
-        $google2fa = new Google2FA();
-        $valid = $google2fa->verifyKey($two_factor_secret, $code);
-        if ($valid) {
-            return true;
+        $google2fa = app(Google2FA::class);
+        try {
+            return $google2fa->verifyKey($two_factor_secret, $code);
+        } catch (InvalidCharactersException|IncompatibleWithGoogleAuthenticatorException|SecretKeyTooShortException) {
+            return false;
         }
-
-        return false;
     }
 
     /**
@@ -139,7 +143,7 @@ class TwoFactorController extends Controller
         $user = Auth::user();
         $google2fa = new Google2FA();
         $secret_key = $google2fa->generateSecretKey(32);
-        $otpAuthUrl = $google2fa->getQRCodeUrl(
+        $otp_auth_url = $google2fa->getQRCodeUrl(
             config('app.name'),
             $user->email,
             $secret_key
@@ -160,10 +164,10 @@ class TwoFactorController extends Controller
             'logoSpaceHeight' => 14,
         ]);
         $qrcode = new QRCode($options);
-        $qrCodePngData = $qrcode->render($otpAuthUrl);
+        $qrcode_png_data = $qrcode->render($otp_auth_url);
 
         return response()->json([
-            'qr_png' => $qrCodePngData,
+            'qr_png' => $qrcode_png_data,
         ]);
     }
 
