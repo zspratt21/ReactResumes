@@ -13,38 +13,48 @@ class SkillController extends Controller
     {
         $values = $request->validated();
         $skill = $request->user()->skills()->find($request->id);
-        if ($skill) {
-            $skill->fill($values);
-        } else {
-            $values['priority'] = $request->user()->skills()->count();
-            $skill = $request->user()->skills()->create($values);
+        if ($skill || ! $request->id) {
+            if ($skill) {
+                $skill->fill($values);
+            } else {
+                $skill = $request->user()->skills()->create($values);
+            }
+            if ((int) $request->remove_icon == 1 || $request->hasFile('file_icon')) {
+                $skill->deleteIcon();
+            }
+            if ($request->hasFile('file_icon')) {
+                $skill->icon = $request->file('file_icon')->storePubliclyAs('users/'.$request->user()->id.'/skills', date('U').'.'.$request->file('file_icon')->clientExtension());
+            }
+            $skill->save();
         }
-        if ((int) $request->remove_icon == 1) {
-            $skill->deleteIcon();
-            $skill->icon = null;
-        } elseif ($request->hasFile('file_icon')) {
-            $skill->deleteIcon();
-            $skill->icon = $request->file('file_icon')->storePubliclyAs('users/'.$request->user()->id.'/skills', date('U').'.'.$request->file('file_icon')->clientExtension());
-        }
-        $skill->save();
 
         return Redirect::route('resume.edit');
     }
 
     public function prioritize(SkillPriorityRequest $request)
     {
+        $skills = $request->user()->skills()->get()->keyBy('id');
+
         foreach ($request->priorities as $priority) {
-            $request->user()->skills()->find($priority['id'])->update(['priority' => $priority['priority']]);
+            if (isset($skills[$priority['id']])) {
+                $skills[$priority['id']]->priority = $priority['priority'];
+            }
         }
+
+        $request->user()->skills()->saveMany($skills->values());
 
         return Redirect::route('resume.edit');
     }
 
     public function delete(CrudDeleteRequest $request)
     {
-        $request->user()->skills()->find($request->id)->delete();
-        foreach ($request->user()->skills()->orderBy('priority')->get() as $index => $skill) {
-            $skill->update(['priority' => $index]);
+        $delete = $request->user()->skills()->find($request->id)?->delete();
+        if ($delete) {
+            $skills = $request->user()->skills()->orderBy('priority')->get();
+            foreach ($skills as $index => $skill) {
+                $skill->priority = $index;
+            }
+            $request->user()->skills()->saveMany($skills);
         }
 
         return Redirect::route('resume.edit');

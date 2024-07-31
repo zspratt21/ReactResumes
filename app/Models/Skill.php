@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Traits\HasFileAttribute;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Skill extends Model
 {
-    use HasFileAttribute;
+    use HasFactory, HasFileAttribute;
 
     protected $fillable = [
         'name',
@@ -34,7 +35,13 @@ class Skill extends Model
 
     public function deleteIcon(): bool
     {
-        return $this->deleteFile('icon');
+        $delete = $this->deleteFile('icon');
+        if ($delete) {
+            $this->icon = null;
+            $this->save();
+        }
+
+        return $delete;
     }
 
     /**
@@ -45,5 +52,14 @@ class Skill extends Model
         $this->deleteIcon();
 
         return parent::delete();
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($skill) {
+            $skill->priority = $skill->user->skills()->count();
+        });
     }
 }
