@@ -71,3 +71,11 @@ test('users can delete an experience', function () {
     $response->assertRedirect(route('resume.edit'));
     $this->assertEquals(0, $this->user->experiences()->count());
 });
+
+test('experiences associated with a deleted user are also deleted', function () {
+    $experience = Experience::factory()->create(['user_id' => $this->user->id]);
+    $id = $experience->id;
+    $this->assertNotNull(Experience::find($id));
+    $this->actingAs($this->user)->delete(route('profile.destroy'), ['password' => 'password']);
+    $this->assertNull(Experience::find($id));
+});

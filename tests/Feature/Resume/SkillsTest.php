@@ -81,3 +81,11 @@ test('users can delete a skill', function () {
     $this->assertEquals(1, $this->user->skills()->count());
     $this->assertEquals(0, $skill_2->fresh()->priority);
 });
+
+test('skills associated with a deleted user are also deleted', function () {
+    $skill = Skill::factory()->create(['user_id' => $this->user->id]);
+    $id = $skill->id;
+    $this->assertNotNull(Skill::find($id));
+    $this->actingAs($this->user)->delete(route('profile.destroy', ['password' => 'password']));
+    $this->assertNull(Skill::find($id));
+});

@@ -55,6 +55,8 @@ test('users can delete a milestone', function () {
 
 test('milestones associated with a deleted experience are also deleted', function () {
     $milestone = Milestone::factory()->create(['experience_id' => $this->experience->id]);
+    $id = $milestone->id;
+    $this->assertNotNull(Milestone::find($id));
     $this->actingAs($this->user)->delete(route('experience.delete'), ['id' => $this->experience->id]);
-    $this->assertNull($milestone->fresh());
+    $this->assertNull(Milestone::find($id));
 });

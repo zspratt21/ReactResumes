@@ -76,6 +76,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->deleteAvatar();
         $this->skills()->delete();
+        $this->experiences()->delete();
+        $this->resumeProfile()->delete();
+        $this->resumeOptions()->delete();
 
         return parent::delete();
     }
@@ -125,5 +128,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function experiences(): HasMany
     {
         return $this->hasMany(Experience::class)->orderBy('start_date', 'desc');
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::created(function ($user) {
+            $user->resumeOptions()->create();
+        });
     }
 }

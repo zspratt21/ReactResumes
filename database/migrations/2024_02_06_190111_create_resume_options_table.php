@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('resume_options', function (Blueprint $table) {
             $table->id();
-            $table->string('font');
-            $table->string('color_scheme');
-            $table->string('layout');
+            $table->string('font')->default('font-sans');
+            $table->string('color_scheme')->default('light');
+            $table->string('layout')->default('Modern');
             $table->integer('user_id');
             $table->timestamps();
         });

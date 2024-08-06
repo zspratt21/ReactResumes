@@ -11,7 +11,6 @@ class ResumeOptions extends Model
         'font',
         'color_scheme',
         'layout',
-        'user_id',
     ];
 
     protected $hidden = [

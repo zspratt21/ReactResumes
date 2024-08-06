@@ -54,7 +54,7 @@ class Experience extends Model
     /**
      * Delete the experience and it's associated image from storage.
      */
-    public function delete(): ?bool
+    public function delete(): bool
     {
         $this->deleteImage();
         $this->milestones()->delete();
