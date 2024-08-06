@@ -7,12 +7,10 @@ use Illuminate\Http\UploadedFile;
 test('users cannot interact with other users skills', function () {
     $other_user = User::factory()->create();
     $skill = Skill::factory()->create(['user_id' => $other_user->id]);
-    $response_modify = $this->actingAs($this->user)->patch(route('skill.modify'), [
+    $response_modify = $this->actingAs($this->user)->patch(route('skill.modify'), $this->example([
         'id' => $skill->id,
-        'name' => 'Laravel',
-        'url' => 'https://laravel.com/',
         'user_id' => $this->user->id,
-    ]);
+    ]));
     $response_modify->assertStatus(302);
     $this->assertEquals(0, $this->user->skills()->count());
     $this->assertEquals($skill->id, $skill->fresh()->id);
@@ -26,27 +24,25 @@ test('users cannot interact with other users skills', function () {
 
 test('users can create a skill', function () {
     $this->assertEquals(0, $this->user->skills()->count());
-    $icon_file = UploadedFile::fake()->image('Laravel logo.png');
-    $response = $this->actingAs($this->user)->patch(route('skill.modify'), [
-        'name' => 'Laravel',
-        'url' => 'https://laravel.com/',
-        'file_icon' => $icon_file,
-    ]);
-    $this->assertNotNull($this->user->skills()->first()->icon);
+    $icon_file = UploadedFile::fake()->image('logo.png');
+    $response = $this->actingAs($this->user)->patch(route('skill.modify'), $this->example(['file_icon' => $icon_file]));
     $response->assertStatus(302);
     $response->assertRedirect(route('resume.edit'));
+    $this->assertNotNull($this->user->skills()->first()->icon);
     $this->assertEquals(1, $this->user->skills()->count());
 });
 
 test('users can edit a skill', function () {
     $skill = Skill::factory()->create(['user_id' => $this->user->id]);
-    $this->assertNotNull($skill->icon);
-    $response = $this->actingAs($this->user)->patch(route('skill.modify'), [
+    $icon_file = UploadedFile::fake()->image('logo.png');
+    $icon_path = $icon_file->store("/users/{$this->user->id}/skills");
+    $skill->icon = $icon_path;
+    $skill->save();
+    $this->assertNotNull($skill->fresh()->icon);
+    $response = $this->actingAs($this->user)->patch(route('skill.modify'), $this->example([
         'id' => $skill->id,
-        'name' => 'Laravel',
-        'url' => 'https://laravel.com/',
         'remove_icon' => 1,
-    ]);
+    ]));
     $response->assertStatus(302);
     $response->assertRedirect(route('resume.edit'));
     $this->assertEquals('Laravel', $skill->fresh()->name);

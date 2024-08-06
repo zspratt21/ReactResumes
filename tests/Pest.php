@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\ExperienceTestCase;
+use Tests\MilestoneTestCase;
 use Tests\ResumeCrudTestCase;
+use Tests\SkillTestCase;
 use Tests\TestCase;
 
 /*
@@ -15,7 +18,10 @@ use Tests\TestCase;
 |
 */
 uses(TestCase::class, RefreshDatabase::class)->in('Feature/Auth', 'Feature/ExampleTest.php', 'Feature/ProfileTest.php');
-uses(ResumeCrudTestCase::class, RefreshDatabase::class)->in('Feature/Resume');
+uses(ResumeCrudTestCase::class, RefreshDatabase::class)->in('Feature/Resume/EditTest.php');
+uses(SkillTestCase::class, RefreshDatabase::class)->in('Feature/Resume/SkillsTest.php');
+uses(ExperienceTestCase::class, RefreshDatabase::class)->in('Feature/Resume/ExperiencesTest.php');
+uses(MilestoneTestCase::class, RefreshDatabase::class)->in('Feature/Resume/MilestonesTest.php');
 
 /*
 |--------------------------------------------------------------------------

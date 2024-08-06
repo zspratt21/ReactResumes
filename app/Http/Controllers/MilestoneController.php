@@ -15,11 +15,13 @@ class MilestoneController extends Controller
         $experience = $request->user()->experiences()->find($request->experience_id);
         if ($experience) {
             $milestone = $experience->milestones()->find($request->id);
-            if ($milestone) {
-                $milestone->fill($values)->save();
-            } else {
-                $values['priority'] = $experience->milestones()->count();
-                $experience->milestones()->create($values);
+            if ($milestone || ! $request->id) {
+                if ($milestone) {
+                    $milestone->fill($values)->save();
+                } else {
+                    $values['priority'] = $experience->milestones()->count();
+                    $experience->milestones()->create($values);
+                }
             }
         }
 
@@ -29,10 +31,14 @@ class MilestoneController extends Controller
     public function prioritize(MilestonePriorityRequest $request)
     {
         $experience = $request->user()->experiences()->find($request->experience_id);
-        if ($experience) {
+        $milestones = $experience?->milestones()->get()->keyBy('id');
+        if ($milestones) {
             foreach ($request->priorities as $priority) {
-                $experience->milestones()->find($priority['id'])->update(['priority' => $priority['priority']]);
+                if ($milestones[$priority['id']]) {
+                    $milestones[$priority['id']]->priority = $priority['priority'];
+                }
             }
+            $experience->milestones()->saveMany($milestones->values());
         }
 
         return Redirect::route('resume.edit');
@@ -44,9 +50,13 @@ class MilestoneController extends Controller
         if ($experience) {
             $milestone = $experience->milestones()->find($request->id);
             if ($milestone) {
-                $milestone->delete();
-                foreach ($experience->milestones()->orderBy('priority')->get() as $index => $indexed_milestone) {
-                    $indexed_milestone->update(['priority' => $index]);
+                $delete = $milestone->delete();
+                if ($delete) {
+                    $milestones = $experience->milestones()->orderBy('priority')->get();
+                    foreach ($milestones as $index => $milestone) {
+                        $milestone->priority = $index;
+                    }
+                    $experience->milestones()->saveMany($milestones);
                 }
             }
         }

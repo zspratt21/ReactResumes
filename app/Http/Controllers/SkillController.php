@@ -36,7 +36,7 @@ class SkillController extends Controller
         $skills = $request->user()->skills()->get()->keyBy('id');
 
         foreach ($request->priorities as $priority) {
-            if (isset($skills[$priority['id']])) {
+            if ($skills[$priority['id']]) {
                 $skills[$priority['id']]->priority = $priority['priority'];
             }
         }

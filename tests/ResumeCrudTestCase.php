@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Storage;
 
 abstract class ResumeCrudTestCase extends TestCase
 {
+    protected User $user;
+
     protected function setUp(): void
     {
         parent::setUp();
-        Storage::fake(config('filesystems.default'));
+        Storage::fake('resume');
         $this->user = User::factory()->create();
     }
 }
