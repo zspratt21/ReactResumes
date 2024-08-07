@@ -7,9 +7,6 @@ test('user cannot edit another users resume options', function () {
     $other_user = User::factory()->create();
     $response = $this->actingAs($this->user)->patch(route('resume-options.update'), $this->example([
         'user_id' => $other_user->id,
-        'font' => 'playfair',
-        'color_scheme' => 'red',
-        'layout' => 'Classic',
     ]));
     $response->assertStatus(302);
     $this->assertEquals($other_user->resumeOptions->font, $other_user->resumeOptions->fresh()->font);

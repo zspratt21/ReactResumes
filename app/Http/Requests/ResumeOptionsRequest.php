@@ -9,9 +9,9 @@ class ResumeOptionsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'font' => ['required'],
-            'color_scheme' => ['required'],
-            'layout' => ['required'],
+            'font' => ['string'],
+            'color_scheme' => ['string'],
+            'layout' => ['string'],
         ];
     }
 

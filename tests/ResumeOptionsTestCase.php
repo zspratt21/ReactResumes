@@ -6,12 +6,12 @@ abstract class ResumeOptionsTestCase extends ResumeCrudTestCase
 {
     protected function example(array $overrides = []): array
     {
-        $resume = [
+        $resume_options = [
             'font' => 'font-roboto',
             'color_scheme' => 'dark',
-            'layout' => 'Modern',
+            'layout' => 'Classic',
         ];
 
-        return array_merge($resume, $overrides);
+        return array_merge($resume_options, $overrides);
     }
 }
