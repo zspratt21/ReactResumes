@@ -18,7 +18,6 @@ test('users cannot edit another users resume profile', function () {
     $this->assertEquals($other_user_resume_profile->instagram, $other_user->resumeProfile->fresh()->instagram);
     $this->assertEquals($other_user_resume_profile->salesforce, $other_user->resumeProfile->fresh()->salesforce);
     $this->assertEquals($other_user_resume_profile->introduction, $other_user->resumeProfile->fresh()->introduction);
-    dump($other_user_resume_profile->toJson());
 });
 
 test('user can create their resume profile', function () {
