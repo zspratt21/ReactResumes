@@ -5,6 +5,7 @@ use Tests\ExperienceTestCase;
 use Tests\MilestoneTestCase;
 use Tests\ResumeCrudTestCase;
 use Tests\ResumeOptionsTestCase;
+use Tests\ResumeProfileTestCase;
 use Tests\SkillTestCase;
 use Tests\TestCase;
 
@@ -20,6 +21,7 @@ use Tests\TestCase;
 */
 uses(TestCase::class, RefreshDatabase::class)->in('Feature/Auth', 'Feature/ExampleTest.php', 'Feature/ProfileTest.php');
 uses(ResumeCrudTestCase::class, RefreshDatabase::class)->in('Feature/Resume/EditTest.php');
+uses(ResumeProfileTestCase::class, RefreshDatabase::class)->in('Feature/Resume/ResumeProfileTest.php');
 uses(ResumeOptionsTestCase::class, RefreshDatabase::class)->in('Feature/Resume/ResumeOptionsTest.php');
 uses(SkillTestCase::class, RefreshDatabase::class)->in('Feature/Resume/SkillsTest.php');
 uses(ExperienceTestCase::class, RefreshDatabase::class)->in('Feature/Resume/ExperiencesTest.php');
