@@ -2,6 +2,7 @@
 
 use App\Models\ResumeProfile;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
 
 test('users cannot edit another users resume profile', function () {
     $other_user = User::factory()->create();
@@ -22,15 +23,22 @@ test('users cannot edit another users resume profile', function () {
 
 test('user can create their resume profile', function () {
     $this->assertNull($this->user->resumeProfile);
-    $response = $this->actingAs($this->user)->patch(route('resume-profile.update'), $this->example());
+    $cover_photo = UploadedFile::fake()->image('cover_photo.png');
+    $response = $this->actingAs($this->user)->patch(route('resume-profile.update'), $this->example(['file_cover_photo' => $cover_photo]));
     $response->assertStatus(302);
     $response->assertRedirect(route('resume.edit'));
     $this->assertNotNull($this->user->fresh()->resumeProfile);
+    $this->assertNotNull($this->user->fresh()->resumeProfile->cover_photo);
 });
 
 test('user can edit their resume profile', function () {
     $resume_profile = ResumeProfile::factory()->create(['user_id' => $this->user->id]);
-    $data = $this->example();
+    $cover_photo = UploadedFile::fake()->image('cover_photo.png');
+    $cover_photo_path = $cover_photo->store("/users/{$this->user->id}/resume-profile");
+    $resume_profile->cover_photo = $cover_photo_path;
+    $resume_profile->save();
+    $this->assertNotNull($resume_profile->fresh()->cover_photo);
+    $data = $this->example(['remove_cover_photo' => 1]);
     $response = $this->actingAs($this->user)->patch(route('resume-profile.update'), $data);
     $response->assertStatus(302);
     $response->assertRedirect(route('resume.edit'));
@@ -42,4 +50,14 @@ test('user can edit their resume profile', function () {
     $this->assertEquals($data['instagram'], $resume_profile->fresh()->instagram);
     $this->assertEquals($data['salesforce'], $resume_profile->fresh()->salesforce);
     $this->assertEquals($data['introduction'], $resume_profile->fresh()->introduction);
+    $this->assertNull($resume_profile->fresh()->cover_photo);
+});
+
+test('resume profile is deleted when user is deleted', function () {
+    $id = $this->user->id;
+    $resume_profile = ResumeProfile::factory()->create(['user_id' => $id]);
+    $this->assertNotNull($this->user->fresh()->resumeProfile);
+    $response = $this->actingAs($this->user)->delete(route('profile.destroy', ['password' => 'password']));
+    $response->assertStatus(302);
+    $this->assertNull($resume_profile->fresh());
 });
