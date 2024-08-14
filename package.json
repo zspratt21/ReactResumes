@@ -9,8 +9,8 @@
         "docker-build-web": "docker-compose build web --no-cache",
         "docker-db-import": "docker-compose exec db sh -c 'mysql -u root -p\"$MYSQL_ROOT_PASSWORD\" \"$MYSQL_DATABASE\" < /dumps/dump.sql'",
         "docker-db-dump": "docker-compose exec db sh -c 'mysqldump -u root -p\"$MYSQL_ROOT_PASSWORD\" \"$MYSQL_DATABASE\" > /dumps/dump.sql'",
-        "docker-tinker": "docker-compose exec cli php artisan tinker",
-        "docker-config-clear": "docker-compose exec cli php artisan config:clear",
+        "docker-tinker": "docker-compose exec web php artisan tinker",
+        "docker-config-clear": "docker-compose exec web php artisan config:clear",
         "docker-artisan-test": "docker-compose exec cli php artisan test",
         "pint": "./vendor/bin/pint",
         "gen_key": "docker-compose exec cli php -r \"echo bin2hex(random_bytes(16)).\\\"\\n\\\";\""
@@ -24,7 +24,7 @@
         "@types/react-dom": "^18.3.0",
         "@vitejs/plugin-react": "^4.3.1",
         "autoprefixer": "^10.4.19",
-        "axios": "^1.7.2",
+        "axios": "^1.7.4",
         "laravel-vite-plugin": "^1.0.5",
         "postcss": "^8.4.39",
         "react": "^18.3.1",
@@ -35,10 +35,10 @@
         "vite": "^5.3.3"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^6.5.2",
-        "@fortawesome/fontawesome-svg-core": "^6.5.2",
-        "@fortawesome/free-brands-svg-icons": "^6.5.2",
+        "@fortawesome/fontawesome-free": "^6.6.0",
+        "@fortawesome/fontawesome-svg-core": "^6.6.0",
+        "@fortawesome/free-brands-svg-icons": "^6.6.0",
         "@hello-pangea/dnd": "^16.6.0",
-        "puppeteer": "^22.13.1"
+        "puppeteer": "^22.14.0"
     }
 }
