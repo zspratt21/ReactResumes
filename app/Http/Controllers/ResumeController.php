@@ -17,6 +17,7 @@ class ResumeController extends Controller
     protected function getResumeName(string $name): string
     {
         $date = date('F Y');
+
         return "{$name} Resume {$date}";
     }
 

@@ -3,9 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\ResumeProfile;
-use Illuminate\Database\Eloquent\Factories\Factory;
-
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends Factory<ResumeProfile>

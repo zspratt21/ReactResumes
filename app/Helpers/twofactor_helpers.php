@@ -3,7 +3,7 @@
 /**
  * Generate an array of two-factor recovery codes.
  *
- * @param  int  $quantity The number of codes to generate.
+ * @param  int  $quantity  The number of codes to generate.
  * @return array<string>
  */
 function generateTwoFactorRecoveryCodes(int $quantity): array
