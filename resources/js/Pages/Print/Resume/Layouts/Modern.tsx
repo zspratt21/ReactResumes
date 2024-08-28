@@ -25,7 +25,7 @@ export default function Modern({user}: {user: User}) {
         >
             <div ref={coverPhotoContainerRef} className={coverPhoto ? 'p-4 hasCoverPhoto' : 'p-4'}>
                 <div
-                    className="pt-4 pb-2 text-gray-900 bg-gray-200 dark:text-white dark:bg-gray-800 hasCoverPhoto:text-white hasCoverPhoto:bg-gray-950/60 hasCoverPhoto:dark:bg-gray-800/60 rounded-lg">
+                    className="pt-4 pb-2 text-gray-900 bg-gray-200 dark:text-white dark:bg-gray-800 hasCoverPhoto:text-white hasCoverPhoto:bg-gray-800/60 hasCoverPhoto:dark:bg-gray-800/60 rounded-lg">
                     <div
                         className="flex justify-between pb-1 mx-4 border-b border-gray-900 hasCoverPhoto:border-white dark:border-white hasCoverPhoto:dark:border-white">
                         <div ref={profilePhotoContainerRef}
@@ -63,7 +63,7 @@ export default function Modern({user}: {user: User}) {
                         </div>
                     </div>
                     <div className="pt-1 px-2">
-                        <div className="p-2 rounded-lg bg-gray-100 hasCoverPhoto:bg-gray-900/20 dark:bg-gray-700 hasCoverPhoto:dark:bg-gray-900/20">
+                        <div className="p-2 rounded-lg bg-gray-300 hasCoverPhoto:bg-gray-900/20 dark:bg-gray-700 hasCoverPhoto:dark:bg-gray-900/20">
                             <p className="text-justify leading-tight">{user.resume_profile.introduction}</p>
                         </div>
                     </div>
@@ -77,10 +77,10 @@ export default function Modern({user}: {user: User}) {
                             return (
                                 <a key={index} href={skill.url} className="text-[18px]">
                                     <div
-                                        className="flex space-x-1 p-1 m-1 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                                        className="flex space-x-1 p-1 m-1 bg-gray-300 dark:bg-gray-700 rounded-lg">
                                         <b className="flex-1">{skill.name}</b>
                                         {!!skill.icon && (
-                                            <img width="100%" className="max-h-[25px] max-w-fit" src={skill.icon} alt={skill.name} rel="preload"/>
+                                            <img width="100%" className="max-h-[25px] max-w-fit" src={skill.icon} rel="preload" alt=""/>
                                         )}
                                     </div>
                                 </a>
@@ -109,7 +109,7 @@ export default function Modern({user}: {user: User}) {
                                 const bottomClass = isLastItem && experience.milestones?.length === 0 ? " pb-4" : " pb-1";
                                 const mainContainerClasses = "px-4" + topClass + bottomClass;
                                 const milestoneContainerBottomClass = isLastItem ? " pb-4 rounded-b-lg" : " pb-1";
-                                const milestoneContainerClasses = "bg-gray-100 dark:bg-gray-700 px-4" + milestoneContainerBottomClass;
+                                const milestoneContainerClasses = "bg-gray-300 dark:bg-gray-700 px-4" + milestoneContainerBottomClass;
                                 return (
                                     <div key={index}>
                                         <div className={mainContainerClasses}>
@@ -135,7 +135,7 @@ export default function Modern({user}: {user: User}) {
                                         {experience.milestones?.length > 0 && (
                                             <div className={milestoneContainerClasses}>
                                                 {experience.milestones.map((milestone, index) => (
-                                                    <div key={index} className="">
+                                                    <div key={index}>
                                                         <u>{milestone.name}</u>
                                                         <p className="text-justify leading-tight"><FormatDescription text={milestone.description}/></p>
                                                     </div>

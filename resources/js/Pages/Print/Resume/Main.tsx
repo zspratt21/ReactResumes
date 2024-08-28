@@ -11,7 +11,6 @@ import { dom, library } from '@fortawesome/fontawesome-svg-core';
 import { User } from '@/types';
 import faTailWind from '@/Icons/Brands/Tailwind';
 import faPuppeteer from '@/Icons/Brands/Puppeteer';
-import { Head } from '@inertiajs/react'
 import AppHead from "@/Components/AppHead";
 
 export default function Main({
@@ -24,12 +23,10 @@ export default function Main({
     nameLinksContainerRef: RefObject<HTMLDivElement>,
     profilePhotoContainerRef: RefObject<HTMLDivElement>,
 }>) {
-    const currentMonth = new Date().toLocaleString('default', { month: 'long' });
-    const currentYear = new Date().getFullYear();
-    const title = `${user.name} Resume ${currentMonth} ${currentYear}`;
     const containerRef = useRef<HTMLDivElement>(null);
     library.add(faTailWind, faPuppeteer, faHtml5, faReact, faLaravel, faLinkedinIn, faGithub, faTwitter, faInstagram, faSalesforce);
     dom.watch();
+    const inIframe = window.self !== window.top;
     useEffect(() => {
         if (coverPhoto) {
             if (coverPhotoContainerRef.current) {
@@ -43,15 +40,17 @@ export default function Main({
             profilePhotoContainerRef.current.style.backgroundImage = `url(${encodeURI(user.avatar)})`;
             profilePhotoContainerRef.current.style.backgroundSize = 'cover';
         }
-        const height = containerRef?.current?.clientHeight;
-        const viewportHeight = window.innerHeight;
-        const heightInVH = height ? (height / viewportHeight) * 100 : 0;
-        let newHeightInVH = 100;
-        while (heightInVH > newHeightInVH) {
-            newHeightInVH += 100;
-        }
-        if (containerRef.current) {
-            containerRef.current.style.height = `${newHeightInVH}vh`;
+        if (!inIframe) {
+            const height = containerRef?.current?.clientHeight;
+            const viewportHeight = window.innerHeight;
+            const heightInVH = height ? (height / viewportHeight) * 100 : 0;
+            let newHeightInVH = 100;
+            while (heightInVH > newHeightInVH) {
+                newHeightInVH += 100;
+            }
+            if (containerRef.current) {
+                containerRef.current.style.height = `${newHeightInVH}vh`;
+            }
         }
     });
 
@@ -67,8 +66,8 @@ export default function Main({
             </div>
             <div className="bg-gray-100 dark:bg-gray-900 w-full">
                 <footer className="pt-2 mx-auto w-fit">
-                    <div className="flex space-x-2 pt-1 pb-1 border-t-2 border-gray-200 dark:border-gray-700">
-                        <b className="text-gray-200 dark:text-gray-700 text-xl">
+                    <div className="flex space-x-2 pt-1 pb-1 border-t-2 border-gray-300 dark:border-gray-700">
+                        <b className="text-gray-300 dark:text-gray-700 text-xl">
                             &#xf1f9;&nbsp;
                             {new Date().getFullYear()}
                             &nbsp;
