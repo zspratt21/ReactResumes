@@ -58,7 +58,7 @@ export default function Main({
     }, []);
 
     return (
-        <div className={`bg-red-500 flex flex-col`} ref={containerRef}>
+        <div className={`flex flex-col`} ref={containerRef}>
             <AppHead/>
             <div className="w-full flex-1">
                 {children}
