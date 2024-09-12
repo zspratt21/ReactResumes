@@ -82,7 +82,7 @@ class ResumeController extends Controller
             ->format('A4')
             ->showBackground()
             ->noSandbox()
-            ->windowSize(1920, 1080);
+            ->windowSize(795, 1124);
 
         return response($browserShot->pdf())
             ->header('Content-Type', 'application/pdf')

@@ -27,7 +27,10 @@ export default function Main({
     library.add(faTailWind, faPuppeteer, faHtml5, faReact, faLaravel, faLinkedinIn, faGithub, faTwitter, faInstagram, faSalesforce);
     dom.watch();
     const inIframe = window.self !== window.top;
+
     useEffect(() => {
+        document.documentElement.className = `${user.resume_options.color_scheme} ${user.resume_options.font}`;
+        document.body.className = `bg-gray-100 dark:bg-gray-900`;
         if (coverPhoto) {
             if (coverPhotoContainerRef.current) {
                 coverPhotoContainerRef.current.style.backgroundImage = `url(${encodeURI(coverPhoto)})`;
@@ -43,7 +46,7 @@ export default function Main({
         if (!inIframe) {
             const height = containerRef?.current?.clientHeight;
             const viewportHeight = window.innerHeight;
-            const heightInVH = height ? (height / viewportHeight) * 100 : 0;
+            const heightInVH = height ? ((height+25) / viewportHeight) * 100 : 0;
             let newHeightInVH = 100;
             while (heightInVH > newHeightInVH) {
                 newHeightInVH += 100;
@@ -52,19 +55,15 @@ export default function Main({
                 containerRef.current.style.height = `${newHeightInVH}vh`;
             }
         }
-    });
+    }, []);
 
     return (
-        <div className={`${user.resume_options.color_scheme} min-h-fit bg-gray-100 dark:bg-gray-900 flex flex-col ${user.resume_options.font}`} ref={containerRef}>
+        <div className={`bg-red-500 flex flex-col`} ref={containerRef}>
             <AppHead/>
-            <div className="w-full flex-1 bg-gray-100 dark:bg-gray-900">
-                <div className="min-h-full w-full">
-                    <main>
-                        {children}
-                    </main>
-                </div>
+            <div className="w-full flex-1">
+                {children}
             </div>
-            <div className="bg-gray-100 dark:bg-gray-900 w-full">
+            <div className="w-full">
                 <footer className="pt-2 mx-auto w-fit">
                     <div className="flex space-x-2 pt-1 pb-1 border-t-2 border-gray-300 dark:border-gray-700">
                         <b className="text-gray-300 dark:text-gray-700 text-xl">
@@ -76,19 +75,19 @@ export default function Main({
                         </b>
                         <div className="flex space-x-3 bg-gray-200 dark:bg-gray-700 rounded-lg py-1 px-3">
                             <a href="https://developer.mozilla.org/en-US/docs/Web/HTML">
-                                <i className="fab fa-html5 text-[#E44D26]" />
+                                <i className="fab fa-html5 text-[#E44D26]"/>
                             </a>
                             <a href="https://tailwindcss.com/">
-                                <i className="fab fa-tailwind text-[#38BDF8]" />
+                                <i className="fab fa-tailwind text-[#38BDF8]"/>
                             </a>
                             <a href="https://react.dev/">
-                                <i className="fab fa-react text-[#61DAFB]" />
+                                <i className="fab fa-react text-[#61DAFB]"/>
                             </a>
                             <a href="https://pptr.dev/">
-                                <i className="fab fa-puppeteer text-[#00D8A2]" />
+                                <i className="fab fa-puppeteer text-[#00D8A2]"/>
                             </a>
                             <a href="https://laravel.com/">
-                                <i className="fab fa-laravel text-[#FF2D20]" />
+                                <i className="fab fa-laravel text-[#FF2D20]"/>
                             </a>
                         </div>
                     </div>
