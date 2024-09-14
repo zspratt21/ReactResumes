@@ -5,7 +5,6 @@ This Breezehome based web application allows users to create, edit, and download
 - PHP 8.3
 - Composer
 - NodeJS 22
-- Yarn
 - OpenSSL
 - Docker & Docker Compose
 - CertUtil
@@ -16,7 +15,7 @@ For Windows users it is HIGHLY recommended to use WSL2 and install the above dep
 1. Begin by cloning this repository with git or an IDE of your choice
 2. You can either use your own certificates or follow [this guide](https://gist.github.com/cecilemuller/9492b848eb8fe46d462abeb26656c4f8) to generate local ssl certificates, where you will also need to install the root certificate into your machine's trusted root certification authorities and place the ssl cert and key in the docker/ssl/certs folder, ensuring they are named 'localhost.crt' and 'localhost.key' respectively.
 3. Run `composer install`
-4. Run `yarn`
+4. Run `npm install`
 5. Run `cp .env.example .env`
 6. Set the xDebug remote host to your local machine's IP address in the .env file
 7. If you want to use Sentry, set the SENTRY_DSN variable to your Sentry DSN's address.
