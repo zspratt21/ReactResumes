@@ -38,4 +38,4 @@ You can now access your application on https://localhost:4430 😎
 ### Creating an account
 Register a new account as normal with any other default laravel application.
 ### Creating a resume
-Once you have created an account and logged in, you can navigate to the resume edit page by clicking the `Resume` link in the header, where you can follow the step bystep process to setup your profile and enter all your information. Once you reach the final step, you will be able to preview what your resume will look like and then download it in PDF format! 🎉
+Once you have created an account and logged in, you can navigate to the resume edit page by clicking the `Resume` link in the header, where you can follow the step-by-step process to setup your profile and enter all your information. Once you reach the final step, you will be able to preview what your resume will look like and then download it in PDF format! 🎉
