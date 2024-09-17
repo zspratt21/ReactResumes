@@ -16,29 +16,29 @@
         "gen-key": "docker-compose exec cli php -r \"echo bin2hex(random_bytes(16)).\\\"\\n\\\";\""
     },
     "devDependencies": {
-        "@fortawesome/fontawesome-free": "^6.6.0",
         "@fortawesome/fontawesome-svg-core": "^6.6.0",
         "@fortawesome/free-brands-svg-icons": "^6.6.0",
-        "@headlessui/react": "^2.0.0",
-        "@hello-pangea/dnd": "^16.6.0",
+        "@headlessui/react": "^2.1.8",
+        "@hello-pangea/dnd": "^17.0.0",
         "@inertiajs/react": "^1.2.0",
-        "@tailwindcss/forms": "^0.5.7",
-        "@types/node": "^20.14.10",
-        "@types/react": "^18.3.3",
+        "@tailwindcss/forms": "^0.5.9",
+        "@types/node": "^22.5.5",
+        "@types/react": "^18.3.6",
         "@types/react-dom": "^18.3.0",
         "@vitejs/plugin-react": "^4.3.1",
-        "autoprefixer": "^10.4.19",
-        "axios": "^1.7.4",
+        "autoprefixer": "^10.4.20",
+        "axios": "^1.7.7",
         "laravel-vite-plugin": "^1.0.5",
-        "postcss": "^8.4.39",
+        "postcss": "^8.4.47",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "tailwind-scrollbar": "^3.1.0",
-        "tailwindcss": "^3.4.6",
-        "typescript": "^5.5.3",
-        "vite": "^5.3.3"
+        "tailwindcss": "^3.4.11",
+        "typescript": "^5.6.2",
+        "vite": "^5.4.6"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^6.6.0",
         "puppeteer": "^22.14.0"
     }
 }
