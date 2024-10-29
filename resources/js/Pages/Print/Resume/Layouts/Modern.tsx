@@ -29,9 +29,11 @@ export default function Modern({user}: {user: User}) {
                     <div
                         className="flex justify-between pb-1 mx-4 border-b border-gray-900 hasCoverPhoto:border-white dark:border-white hasCoverPhoto:dark:border-white">
                         <div ref={profilePhotoContainerRef}
-                             className="min-h-[118.75px] min-w-[118.75px] rounded-full border-2 border-gray-900 dark:border-white hasCoverPhoto:border-white"></div>
+                             className={user.avatar ? 'min-h-[118.75px] min-w-[118.75px] rounded-full border-2 border-gray-900 dark:border-white hasCoverPhoto:border-white' : 'flex-1'}>
+                            <h1 className={`text-4xl font-bold ${user.avatar && 'hidden'}`}>{user.name}</h1>
+                        </div>
                         <div className="flex flex-col text-right" ref={nameLinksContainerRef}>
-                            <h1 className="text-4xl font-bold">{user.name}</h1>
+                            <h1 className={`text-4xl font-bold ${!user.avatar && 'hidden'}`}>{user.name}</h1>
                             <div
                                 className="flex flex-col items-end font-bold">
                                 {user.resume_profile.linkedin && (<a href={user.resume_profile.linkedin}
