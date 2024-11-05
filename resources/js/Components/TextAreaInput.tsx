@@ -24,6 +24,7 @@ export default forwardRef(function TextAreaInput(
                 className
             }
             ref={localRef}
+            spellCheck={true}
         />
     );
 });
