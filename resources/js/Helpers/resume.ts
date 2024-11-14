@@ -9,7 +9,7 @@ export function groupExperiencesByType(experiences: Experience[]): ExperienceGro
 
 export function experienceDate(value: string | number | Date){
     const dateOptions: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short'};
-    return new Date(value).toLocaleDateString('default', dateOptions);
+    return value ? new Date(value).toLocaleDateString('default', dateOptions): 'Present';
 }
 
 export function capitalizeFirstLetter(string: string) {
