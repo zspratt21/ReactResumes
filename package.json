@@ -16,6 +16,7 @@
         "gen-key": "docker-compose exec cli php -r \"echo bin2hex(random_bytes(16)).\\\"\\n\\\";\""
     },
     "devDependencies": {
+        "@fortawesome/fontawesome-free": "^6.6.0",
         "@fortawesome/fontawesome-svg-core": "^6.6.0",
         "@fortawesome/free-brands-svg-icons": "^6.6.0",
         "@headlessui/react": "^2.1.8",
@@ -23,6 +24,7 @@
         "@inertiajs/react": "^1.2.0",
         "@tailwindcss/forms": "^0.5.9",
         "@types/node": "^22.5.5",
+        "@types/qs": "^6.9.17",
         "@types/react": "^18.3.6",
         "@types/react-dom": "^18.3.0",
         "@vitejs/plugin-react": "^4.3.1",
@@ -38,7 +40,6 @@
         "vite": "^5.4.8"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^6.6.0",
         "puppeteer": "^22.14.0"
     }
 }
