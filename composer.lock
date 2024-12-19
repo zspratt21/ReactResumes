@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b823b6bb3f95e4c2cfbcdda9c3f719f9",
+    "content-hash": "8656042578c0f132f92f752247cd78ef",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -4358,16 +4358,16 @@
         },
         {
             "name": "spatie/browsershot",
-            "version": "4.4.0",
+            "version": "5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/browsershot.git",
-                "reference": "3ff350cd0a36943759e2932a27d8cd18c11e5fdc"
+                "reference": "aae8a337f73f63fc41c4c759fc397ce725312367"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/browsershot/zipball/3ff350cd0a36943759e2932a27d8cd18c11e5fdc",
-                "reference": "3ff350cd0a36943759e2932a27d8cd18c11e5fdc",
+                "url": "https://api.github.com/repos/spatie/browsershot/zipball/aae8a337f73f63fc41c4c759fc397ce725312367",
+                "reference": "aae8a337f73f63fc41c4c759fc397ce725312367",
                 "shasum": ""
             },
             "require": {
@@ -4378,10 +4378,10 @@
                 "symfony/process": "^6.0|^7.0"
             },
             "require-dev": {
-                "pestphp/pest": "^1.20",
+                "pestphp/pest": "^3.0",
                 "spatie/image": "^3.6",
                 "spatie/pdf-to-text": "^1.52",
-                "spatie/phpunit-snapshot-assertions": "^4.2.3"
+                "spatie/phpunit-snapshot-assertions": "^4.2.3|^5.0"
             },
             "type": "library",
             "autoload": {
@@ -4414,7 +4414,7 @@
                 "webpage"
             ],
             "support": {
-                "source": "https://github.com/spatie/browsershot/tree/4.4.0"
+                "source": "https://github.com/spatie/browsershot/tree/5.0.3"
             },
             "funding": [
                 {
@@ -4422,7 +4422,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-11-25T16:02:22+00:00"
+            "time": "2024-12-16T09:46:16+00:00"
         },
         {
             "name": "spatie/temporary-directory",
